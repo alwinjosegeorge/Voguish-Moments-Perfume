@@ -10,7 +10,7 @@ export function Footer() {
           <div>
             <div className="mb-4"><VoguishMomentsLogo /></div>
             <p className="text-muted-foreground max-w-xs">
-              Elegance in every drop – Beauty that feels as good as it looks.
+              We Sell Emotions &amp; Moments
             </p>
           </div>
           <div className="flex flex-col md:items-end justify-center gap-3 text-sm">
