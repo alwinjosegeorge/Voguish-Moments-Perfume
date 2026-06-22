@@ -292,23 +292,21 @@ function Home() {
         </section>
       )}
  
-      {!isRollOnPremium && !isHeroOnlyMode && (
-        /* Global Combined Showcase Link above Footer */
-        <section className="py-20 bg-cream/30 border-t border-border/40 text-center">
-          <div className="max-w-xl mx-auto px-6">
-            <h2 className="font-display text-lg md:text-2xl font-light tracking-[0.2em] uppercase text-[#1c1917] mb-4">Our Fragrance Library</h2>
-            <p className="text-sm text-muted-foreground leading-relaxed mb-8">
-              Discover our entire range of exceptional perfumes from all bases, crafted with premium ingredients and long-lasting concentration.
-            </p>
-            <Link
-              to="/shop"
-              className="inline-flex items-center justify-center rounded-full bg-[#1c1917] hover:bg-[#1c1917]/90 text-white font-semibold text-xs tracking-widest uppercase px-8 py-4 shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
-            >
-              See All Our Perfumes
-            </Link>
-          </div>
-        </section>
-      )}
+      {/* Global Combined Showcase Link above Footer */}
+      <section className="py-20 bg-cream/30 border-t border-border/40 text-center">
+        <div className="max-w-xl mx-auto px-6">
+          <h2 className="font-display text-lg md:text-2xl font-light tracking-[0.2em] uppercase text-[#1c1917] mb-4">Our Fragrance Library</h2>
+          <p className="text-sm text-muted-foreground leading-relaxed mb-8">
+            Discover our entire range of exceptional perfumes from all bases, crafted with premium ingredients and long-lasting concentration.
+          </p>
+          <Link
+            to="/shop"
+            className="inline-flex items-center justify-center rounded-full bg-[#1c1917] hover:bg-[#1c1917]/90 text-white font-semibold text-xs tracking-widest uppercase px-8 py-4 shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
+          >
+            See All Our Perfumes
+          </Link>
+        </div>
+      </section>
     </SiteLayout>
   );
 }

@@ -20,9 +20,11 @@ export function ProductCard({ p }: { p: Product }) {
     >
       <div className="relative aspect-[3/4] overflow-hidden rounded-none bg-white border border-border/40">
         {/* Top Left Badge */}
-        <span className="absolute top-3 left-3 z-10 bg-white/95 border border-border/80 text-foreground text-[9px] font-bold tracking-widest px-2.5 py-1 rounded-none shadow-xs uppercase">
-          {p.hr}
-        </span>
+        {p.hr && (
+          <span className="absolute top-3 left-3 z-10 bg-white/95 border border-border/80 text-foreground text-[9px] font-bold tracking-widest px-2.5 py-1 rounded-none shadow-xs uppercase">
+            {p.hr}
+          </span>
+        )}
 
         {/* Product Image */}
         <img
