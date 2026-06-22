@@ -297,17 +297,50 @@ function ProductPage() {
                 : product.description;
 
               return (
-                <p className="mt-8 text-muted-foreground leading-relaxed text-sm">
-                  {displayDescription}
-                  {shouldShowToggle && (
-                    <button
-                      onClick={() => setIsExpanded(!isExpanded)}
-                      className="ml-2 text-[#1c1917] hover:opacity-75 font-medium underline cursor-pointer inline-block"
-                    >
-                      {isExpanded ? "See Less" : "See More"}
-                    </button>
+                <>
+                  <p className="mt-8 text-muted-foreground leading-relaxed text-sm">
+                    {displayDescription}
+                    {shouldShowToggle && (
+                      <button
+                        onClick={() => setIsExpanded(!isExpanded)}
+                        className="ml-2 text-[#1c1917] hover:opacity-75 font-medium underline cursor-pointer inline-block"
+                      >
+                        {isExpanded ? "See Less" : "See More"}
+                      </button>
+                    )}
+                  </p>
+
+                  {product.slug === "divorce-lotion" && (
+                    <div className="mt-10 border-t border-border/60 pt-8 flex flex-col gap-6 text-sm text-foreground">
+                      <div>
+                        <h4 className="font-semibold text-zinc-900 tracking-wider text-xs uppercase mb-2">Special Features</h4>
+                        <ul className="list-disc pl-5 text-muted-foreground space-y-1">
+                          <li>Dye-free</li>
+                          <li>Cruelty-free</li>
+                          <li>A millionaire collective seductive allure, skin-nourishing lotion adds the perfect touch of scent. Airy French sage mixes with creamy white oud and warm velvet musk for an enticing, Honey sensual aroma.</li>
+                        </ul>
+                      </div>
+                      
+                      <div>
+                        <h4 className="font-semibold text-zinc-900 tracking-wider text-xs uppercase mb-2">Fragrance Profile</h4>
+                        <p className="text-muted-foreground"><strong className="text-zinc-800 font-medium">Fragrance Type:</strong> Honey Base</p>
+                        <p className="text-muted-foreground"><strong className="text-zinc-800 font-medium">Notes:</strong> Honey, velvet musk, oud, fruity, sweet, warm spicy, Silky amber</p>
+                      </div>
+
+                      <div>
+                        <h4 className="font-semibold text-zinc-900 tracking-wider text-xs uppercase mb-2">How-to-Apply & Tip</h4>
+                        <p className="text-muted-foreground mb-2">Start right after a shower. Lightly towel-dry your skin so it's still slightly damp. Moist skin holds fragrance better than dry skin.</p>
+                        <p className="text-muted-foreground italic"><strong className="text-zinc-800 not-italic font-medium">Tip:</strong> Rub gently or just pat it in. Don't aggressively rub your wrists together—it can break down the fragrance molecules and reduce longevity.</p>
+                      </div>
+
+                      <div className="bg-[#FAF9F5]/60 p-4 border border-border/40 text-center font-display">
+                        <p className="text-xs uppercase tracking-widest text-zinc-800 font-semibold mb-1">"DIVORCE"</p>
+                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider mb-2">FROM OUR FAST-MOVING PARFUM COLLECTION. REIMAGINED AS A BODY LOTION WHAT LASTS BEYOND THE MOMENT?</p>
+                        <p className="text-[10px] text-accent uppercase tracking-widest font-bold">THIS DROP SPEAKS YOUR IDENTITY TO THE PEOPLES</p>
+                      </div>
+                    </div>
                   )}
-                </p>
+                </>
               );
             })()}
           </div>
