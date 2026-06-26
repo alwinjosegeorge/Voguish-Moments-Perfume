@@ -286,7 +286,7 @@ function Home() {
                   className="text-center text-[10px] md:text-[12px] text-zinc-800 leading-[1.6] uppercase tracking-[0.08em] mb-4 max-w-[850px] w-[90%] md:w-full"
                   style={{ fontFamily: "'Cinzel', 'Cormorant Garamond', serif", fontVariant: "small-caps" }}
                 >
-                  IN MANY COUNTRIES, SPICES ARE CONSIDERED PRECIOUS AND PRESERVED, AND SOME OF THEM ARE GIVEN TO THE OUTSIDE WORLD FOR KNOWLEDGE. IN SUCH A WAY, CONSIDERING THE PALACES AND PALACES OF MANY COUNTRIES WE HAVE DECIDED TO COLLECT ONLY THOSE SPICES THAT ARE CONSIDERED PRECIOUS TREASURES FROM PALACES AS RARE COLLECTIONS.
+                  IN MANY COUNTRIES, SPICES ARE CONSIDERED PRECIOUS AND PRESERVED, AND SOME OF THEM ARE GIVEN TO THE OUTSIDE WORLD FOR KNOWLEDGE. IN SUCH A WAY, CONSIDERING THE PALACES OF MANY COUNTRIES WE HAVE DECIDED TO COLLECT ONLY THOSE SPICES THAT ARE CONSIDERED PRECIOUS TREASURES FROM PALACES AS RARE COLLECTIONS.
                 </p>
 
                 {/* Malayalam Paragraph */}
@@ -294,7 +294,7 @@ function Home() {
                   className="text-center text-[10px] md:text-[11.5px] text-zinc-600 leading-[1.8] max-w-[850px] w-[90%] md:w-full font-light"
                   style={{ fontFamily: "'Noto Serif Malayalam', 'Manjari', 'Noto Sans Malayalam', sans-serif" }}
                 >
-                  പല രാജ്യങ്ങളിലും സുഗന്ധവ്യഞ്ജനങ്ങൾ അമൂല്യവും സംരക്ഷിക്കപ്പെടുന്നതുമായി കണക്കാക്കപ്പെടുന്നു, അവയിൽ ചിലത് പുറം ലോകത്തിന് അറിവിനായി നൽകപ്പെടുന്നു അങ്ങനെ, പല രാജ്യങ്ങളിലെയും കൊട്ടാരങ്ങളും കൊട്ടാരങ്ങളും കണക്കിലെടുക്കുമ്പോൾ, കൊട്ടാരങ്ങളിൽ നിന്ന് അപൂർവ ശേഖരങ്ങളായി കണക്കാക്കപ്പെടുന്ന സുഗന്ധവ്യഞ്ജനങ്ങൾ മാത്രം ശേഖരിക്കാൻ ഞങ്ങൾ തീരുമാനിച്ചു.
+                  പല രാജ്യങ്ങളിലും സുഗന്ധവ്യഞ്ജനങ്ങൾ അമൂല്യവും സംരക്ഷിക്കപ്പെടുന്നതുമായി കണക്കാക്കപ്പെടുന്നു, അവയിൽ ചിലത് പുറം ലോകത്തിന് അറിവിനായി നൽകപ്പെടുന്നു അങ്ങനെ, പല രാജ്യങ്ങളിലെയും കൊട്ടാരങ്ങൾ കണക്കിലെടുക്കുമ്പോൾ, കൊട്ടാരങ്ങളിൽ നിന്ന് അപൂർവ ശേഖരങ്ങളായി കണക്കാക്കപ്പെടുന്ന സുഗന്ധവ്യഞ്ജനങ്ങൾ മാത്രം ശേഖരിക്കാൻ ഞങ്ങൾ തീരുമാനിച്ചു.
                 </p>
               </div>
             ) : (
