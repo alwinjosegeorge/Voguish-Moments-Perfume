@@ -385,36 +385,43 @@ function CartPage() {
 
               {/* Payment logos container */}
               <div className="mt-4 flex items-center justify-center gap-2 select-none pointer-events-none">
-                {/* Visa Icon */}
-                <svg className="w-10 h-6.5 rounded" viewBox="0 0 40 26" fill="none">
-                  <rect width="40" height="26" rx="3" fill="#1A1F71"/>
-                  <path d="M14 17.5l1.6-9H18.2l-1.6 9H14zm8.7-8.8c-.8-.4-1.9-.7-3.1-.7-3 0-.9 1.4-.9 3.2 0 1.4 1.5 2.1 2.5 2.6c1.1.5 1.5.8 1.5 1.2 0 .7-1 .9-1.8.9-1.2 0-2.1-.3-2.8-.6l-.7 2c.8.4 2 .7 3.3.7 3.1 0 5-1.4 5-3.6 0-2.4-3.6-2.6-3.6-3.5 0-.3.4-.7 1.2-.7.8 0 1.6.2 2.2.5l.6-2.1zm4.8.3h-2.2c-.6 0-1.1.3-1.4.9l-3 7.6h2.7l.5-1.5h3.1l.3 1.5h2.4l-2.4-8.5zm-2.8 5l1.1-3.2.6 3.2h-1.7zm8.8-5h-2.1c-.6 0-1 .4-1.2.9L31.8 17.5h2.6l.5-1.3H38l.2 1.3h2.3l-1.9-9z" fill="#FFF"/>
+                {/* Razorpay Icon */}
+                <svg className="w-13 h-6.5 rounded bg-[#0F172A] px-1.5" viewBox="0 0 50 22" fill="none">
+                  <path d="M11 16.5l5.5-8.5H8.5L6.8 16.5h4.2z" fill="#00E5FF"/>
+                  <path d="M6.8 16.5l2.7-4.5h5.5l-2.7 4.5H6.8z" fill="#0052FF"/>
+                  <text x="18" y="13.5" fill="white" fontFamily="system-ui, sans-serif" fontWeight="bold" fontSize="6.2">Razorpay</text>
                 </svg>
 
-                {/* Mastercard Icon */}
-                <svg className="w-10 h-6.5 rounded" viewBox="0 0 40 26" fill="none">
-                  <rect width="40" height="26" rx="3" fill="#0A0B1A"/>
-                  <circle cx="16" cy="13" r="7" fill="#EB001B"/>
-                  <circle cx="24" cy="13" r="7" fill="#F79E1B" fillOpacity="0.8"/>
+                {/* UPI Icon */}
+                <svg className="w-10 h-6.5 rounded bg-[#5F259F] px-1" viewBox="0 0 40 26" fill="none">
+                  <rect width="40" height="26" rx="3" fill="#5F259F"/>
+                  <text x="7" y="16.5" fill="white" fontFamily="system-ui, sans-serif" fontWeight="bold" fontSize="9" fontStyle="italic" letterSpacing="0.05em">UPI</text>
                 </svg>
 
-                {/* Amex Icon */}
-                <svg className="w-10 h-6.5 rounded" viewBox="0 0 40 26" fill="none">
-                  <rect width="40" height="26" rx="3" fill="#0170C0"/>
-                  <path d="M6 18V8h2.3l1.8 4.2L12 8h2.3v10h-1.8v-6.3L10.6 16H9.7L7.8 11.7V18H6zm11.7-5.5h2.2V14h-2.2v2.2h2.8V18h-4.6V8h4.6v1.8h-2.8v1.7zm8.8-4.5l1.5 2.5 1.5-2.5h2.2l-2.5 4 2.5 4h-2.2l-1.5-2.5L28.7 18h-2.2l2.5-4-2.5-4h2.2z" fill="#FFF"/>
+                {/* GPay Icon */}
+                <svg className="w-10 h-6.5 rounded bg-white border border-border/70 px-1" viewBox="0 0 40 26" fill="none">
+                  <rect width="40" height="26" rx="3" fill="#FFFFFF"/>
+                  <path d="M15 15.5h6" stroke="#4285F4" strokeWidth="2" strokeLinecap="round"/>
+                  <path d="M17 11.5h4" stroke="#EA4335" strokeWidth="2" strokeLinecap="round"/>
+                  <path d="M19 13.5h3" stroke="#FBBC05" strokeWidth="2" strokeLinecap="round"/>
+                  <path d="M21 9.5h3" stroke="#34A853" strokeWidth="2" strokeLinecap="round"/>
+                  <text x="8.5" y="21.5" fill="#5F6368" fontFamily="system-ui, sans-serif" fontWeight="bold" fontSize="6.2">G Pay</text>
                 </svg>
 
-                {/* PayPal Icon */}
-                <svg className="w-10 h-6.5 rounded" viewBox="0 0 40 26" fill="none">
-                  <rect width="40" height="26" rx="3" fill="#003087"/>
-                  <path d="M15 19.5h2.5c.5 0 .9-.3 1-.8l1.7-8.2c.1-.5-.3-.9-.8-.9h-3.5L14.2 18c-.1.5.3 1 .8 1.5z" fill="#0079C1"/>
-                  <path d="M17.5 17.5h2.5c.5 0 .9-.3 1-.8l1.7-8.2c.1-.5-.3-.9-.8-.9h-3.5L16.7 16c-.1.5.3 1 .8 1.5z" fill="#00457C" fillOpacity="0.6"/>
+                {/* Net Banking Icon */}
+                <svg className="w-10 h-6.5 rounded bg-[#0A84FF] px-1" viewBox="0 0 40 26" fill="none">
+                  <rect width="40" height="26" rx="3" fill="#0A84FF"/>
+                  <text x="4" y="13" fill="white" fontFamily="system-ui, sans-serif" fontWeight="bold" fontSize="5.5" letterSpacing="0.02em">NET</text>
+                  <text x="4" y="20.5" fill="white" fontFamily="system-ui, sans-serif" fontWeight="bold" fontSize="5.5" letterSpacing="0.02em">BANKING</text>
                 </svg>
 
-                {/* Apple Pay Icon */}
-                <svg className="w-10 h-6.5 rounded" viewBox="0 0 40 26" fill="none">
-                  <rect width="40" height="26" rx="3" fill="#000000"/>
-                  <path d="M16 11.2c-.3 0-.8.2-1.1.5-.4.4-.7 1-.7 1.6 0 .6.3 1.2.7 1.4.3.2.7.3.9.3.4 0 .8-.2 1.1-.5.4-.4.7-1 .7-1.6 0-.6-.3-1.2-.7-1.4-.3-.2-.7-.3-.9-.3zm0-.8c.7 0 1.3.4 1.6 1 .3-.7 1-1 1.7-1 .8 0 1.5.5 1.7 1.3.1.4.1.8.1 1.2 0 1.2-.4 2.1-.9 2.7-.4.5-1 1-1.8 1-.6 0-1-.3-1.4-.3-.3 0-.7.3-1.2.3-.8 0-1.4-.5-1.7-1-.5-.8-.7-1.8-.7-2.7 0-1.8.9-2.8 2.6-2.8z" fill="#FFF"/>
+                {/* Card Icon */}
+                <svg className="w-10 h-6.5 rounded bg-[#111111] px-1" viewBox="0 0 40 26" fill="none">
+                  <rect width="40" height="26" rx="3" fill="#111111"/>
+                  <rect x="4" y="8" width="32" height="4" fill="white" opacity="0.3"/>
+                  <rect x="4" y="15" width="8" height="5" rx="1" fill="white" opacity="0.8"/>
+                  <circle cx="28" cy="17.5" r="3.5" fill="#EB001B"/>
+                  <circle cx="32" cy="17.5" r="3.5" fill="#F79E1B" fillOpacity="0.8"/>
                 </svg>
               </div>
 
