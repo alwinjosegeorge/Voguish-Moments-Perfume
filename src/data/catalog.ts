@@ -455,7 +455,7 @@ export function getMergedProducts(): Product[] {
   }
 }
 
-export const CATEGORIES = ["All", "Oud Base", "Floral Base", "Fruity Base", "Fresh Base"] as const;
+export const CATEGORIES = ["All", "Oud Base", "Floral Base", "Fruity Base", "Fresh Base", "Roll On", "Messi Edition", "Divorce Lotion"] as const;
 
 
 export type Article = {
