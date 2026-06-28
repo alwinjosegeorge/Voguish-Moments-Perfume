@@ -28,11 +28,11 @@ import dopamine10mlImg from "@/assets/dopamine-10ml.webp";
 import moodSwings15mlImg from "@/assets/mood-swings-15ml.webp";
 
 // Roll ON Premium Imports
-import dubaiNightsImg from "@/assets/dubai-nights.png";
-import placeParisImg from "@/assets/place-paris.png";
-import lastSeenImg from "@/assets/last-seen.png";
-import cafeLipsImg from "@/assets/cafe-lips.png";
-import sacrificeImg from "@/assets/sacrifice.png";
+import dubaiNightsImg from "@/assets/dubai-nights.webp";
+import placeParisImg from "@/assets/place-paris.webp";
+import lastSeenImg from "@/assets/last-seen.webp";
+import cafeLipsImg from "@/assets/cafe-lips.webp";
+import sacrificeImg from "@/assets/sacrifice.webp";
 import dubaiNightsNewImg from "@/assets/dubai-nights-new.webp";
 import placeParisNewImg from "@/assets/place-paris-new.webp";
 import lastSeenNewImg from "@/assets/last-seen-new.webp";

@@ -11,10 +11,10 @@ import { getProducts } from "@/lib/productService";
 import divorceHero from "@/assets/divorce-hero.webp";
 import seductionHeroImg from "@/assets/seduction-1.webp";
 import dopamineHeroImg from "@/assets/dopamine-1.webp";
-import oilsPageHeader from "@/assets/oils-page-header.png";
+import oilsPageHeader from "@/assets/oils-page-header.webp";
 import oilsPageHeaderMobile from "@/assets/oils-page-header-mobile.webp";
 import messiHeroImg from "@/assets/messi-hero.webp";
-import oilsPageHeaderLap from "@/assets/oils-page-header-lap.png";
+import oilsPageHeaderLap from "@/assets/oils-page-header-lap.webp";
 import divorceLotionHero from "@/assets/divorce-lotion-hero.webp";
 import oilsPageHeaderImage from "@/assets/oils-page-header-image.webp";
 
