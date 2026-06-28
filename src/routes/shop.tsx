@@ -83,10 +83,6 @@ function Shop() {
         {list.length === 0 && (
           <p className="mt-16 text-center text-muted-foreground">No products in this category yet.</p>
         )}
-
-        <div className="mt-16 flex justify-center">
-          <Link to="/shop" className="bg-foreground text-background rounded-full px-7 py-3 text-sm">Load More</Link>
-        </div>
       </section>
     </SiteLayout>
   );
