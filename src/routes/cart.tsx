@@ -337,13 +337,15 @@ function CartPage() {
                       <button
                         type="button"
                         onClick={() => setIsStateDropdownOpen(!isStateDropdownOpen)}
-                        className="w-full bg-[#FAF9F5] border border-border rounded-xl pl-4 pr-10 py-2.5 text-xs outline-none focus:ring-1 focus:ring-accent cursor-pointer flex items-center justify-between text-left h-[38px] transition-all"
+                        className="w-full bg-[#FAF9F5] border border-border rounded-xl pl-4 pr-10 py-2.5 text-xs outline-none focus:ring-1 focus:ring-accent cursor-pointer text-left transition-all"
                       >
                         <span className={deliveryState ? "text-foreground font-medium" : "text-muted-foreground"}>
                           {deliveryState || "Select State"}
                         </span>
-                        <ChevronDown className={`w-3.5 h-3.5 text-muted-foreground/80 transition-transform duration-200 ${isStateDropdownOpen ? "rotate-180" : ""}`} />
                       </button>
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-muted-foreground/80">
+                        <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isStateDropdownOpen ? "rotate-180" : ""}`} />
+                      </div>
 
                       {isStateDropdownOpen && (
                         <div className="absolute z-50 mt-1.5 w-full bg-[#FAF9F5] border border-border rounded-xl shadow-lg max-h-60 overflow-y-auto py-1.5 animate-fade-in">
