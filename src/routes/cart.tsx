@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { Minus, Plus, X, Check, ShoppingBag } from "lucide-react";
+import { Minus, Plus, X, Check, ShoppingBag, ChevronDown } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { useCart } from "@/lib/cart";
 import { createOrderDb } from "@/lib/api/dbFunctions";
@@ -318,17 +318,22 @@ function CartPage() {
                     <label className="block text-[10px] tracking-wider text-muted-foreground font-bold uppercase mb-1.5">
                       State *
                     </label>
-                    <select
-                      required
-                      value={deliveryState}
-                      onChange={(e) => setDeliveryState(e.target.value)}
-                      className="w-full bg-[#FAF9F5] border border-border rounded-xl px-4 py-2.5 text-xs outline-none focus:ring-1 focus:ring-accent cursor-pointer"
-                    >
-                      <option value="">Select State</option>
-                      {STATES_OF_INDIA.map((st) => (
-                        <option key={st} value={st}>{st}</option>
-                      ))}
-                    </select>
+                    <div className="relative">
+                      <select
+                        required
+                        value={deliveryState}
+                        onChange={(e) => setDeliveryState(e.target.value)}
+                        className="w-full bg-[#FAF9F5] border border-border rounded-xl pl-4 pr-10 py-2.5 text-xs outline-none focus:ring-1 focus:ring-accent cursor-pointer appearance-none"
+                      >
+                        <option value="">Select State</option>
+                        {STATES_OF_INDIA.map((st) => (
+                          <option key={st} value={st}>{st}</option>
+                        ))}
+                      </select>
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none text-muted-foreground/80">
+                        <ChevronDown className="w-3.5 h-3.5" />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
