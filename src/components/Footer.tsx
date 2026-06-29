@@ -34,7 +34,6 @@ export function Footer() {
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-6">
           <nav className="flex flex-wrap gap-7 text-sm">
             <Link to="/" className="hover:text-accent">Home</Link>
-            <Link to="/articles" className="hover:text-accent">Articles</Link>
             <Link to="/about" className="hover:text-accent">About Us</Link>
             <Link to="/contact" className="hover:text-accent">Contact Us</Link>
           </nav>
