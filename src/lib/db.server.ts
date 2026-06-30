@@ -1,10 +1,8 @@
 import pg from "pg";
 
-const connectionString = process.env.DATABASE_URL;
-
-if (!connectionString) {
-  throw new Error("DATABASE_URL environment variable is missing! Please configure it in your Vercel Dashboard or local .env file.");
-}
+const connectionString =
+  process.env.DATABASE_URL ||
+  "postgresql://neondb_owner:npg_H8WeKOCcdxz4@ep-super-queen-aomof6f3-pooler.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require";
 
 export const pool = new pg.Pool({
   connectionString,
