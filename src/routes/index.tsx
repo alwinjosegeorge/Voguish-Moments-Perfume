@@ -262,7 +262,19 @@ function Home() {
  
       {/* Mode-Specific Showcase */}
       {!isHeroOnlyMode && (
-        <section className={isRollOnPremium ? "pt-6 pb-16 md:pt-8 md:pb-24" : "py-16"}>
+        <section className={isRollOnPremium ? "pt-6 pb-16 md:pt-8 md:pb-24" : "py-16 px-0"}>
+          {/* Full-width Silent Video Banner for Fresh Base (no curves, edge to edge) */}
+          {!isRollOnPremium && activeMode === "FRESH_BASE" && (
+            <div className="w-full aspect-video relative mb-14">
+              <iframe
+                src="https://player.cloudinary.com/embed/?cloud_name=dar4m0jyt&public_id=lv_0_20260701024035_ro3bnu&autoplay=true&loop=true&muted=true&controls=false&player[autoplay]=true&player[loop]=true&player[muted]=true&player[controls]=false"
+                className="w-full h-full border-none pointer-events-none absolute inset-0"
+                allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+                style={{ border: "none" }}
+              />
+            </div>
+          )}
+
           <div className="max-w-[1300px] mx-auto px-6 lg:px-12">
             {isRollOnPremium ? (
               <div className="flex flex-col items-center justify-center text-center mt-2 mb-12 animate-fade-up mx-auto w-full select-none">
@@ -298,21 +310,9 @@ function Home() {
                 </p>
               </div>
             ) : (
-              <>
-                {activeMode === "FRESH_BASE" && (
-                  <div className="mb-14 w-full max-w-[900px] mx-auto overflow-hidden rounded-2xl shadow-2xl border border-border/30 aspect-video relative">
-                    <iframe
-                      src="https://player.cloudinary.com/embed/?cloud_name=dar4m0jyt&public_id=lv_0_20260701024035_ro3bnu&autoplay=true&loop=true&muted=true&controls=false&player[autoplay]=true&player[loop]=true&player[muted]=true&player[controls]=false"
-                      className="w-full h-full border-none pointer-events-none absolute inset-0"
-                      allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
-                      style={{ border: "none" }}
-                    />
-                  </div>
-                )}
-                <h2 className="text-center font-display text-lg md:text-2xl font-light tracking-[0.2em] uppercase text-[#1c1917] mb-12">
-                  {getModeHeading(activeMode)}
-                </h2>
-              </>
+              <h2 className="text-center font-display text-lg md:text-2xl font-light tracking-[0.2em] uppercase text-[#1c1917] mb-12">
+                {getModeHeading(activeMode)}
+              </h2>
             )}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
               {modePerfumes.map((p) => (
