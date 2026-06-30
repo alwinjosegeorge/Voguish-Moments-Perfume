@@ -67,22 +67,19 @@ export function ModeSelectionScreen() {
         "--bg-mobile": `url(${bgImageMobile})`,
       } as React.CSSProperties}
     >
-      {/* Clean dark overlay to improve text contrast without blurring */}
-      <div className="absolute inset-0 bg-black/40" />
-
       {/* Main card/form container - animate-fade-up runs here ONCE on mount */}
       <div className="relative z-10 max-w-sm w-full flex flex-col items-center animate-fade-up">
-        {/* Centered Logo - Inverted to white */}
+        {/* Centered Logo - original black for bright background */}
         <div className="mb-14 hidden md:block">
           <img
             src={logoImg}
             alt="Voguish Moments Logo"
-            className="h-14 md:h-16 w-auto object-contain invert brightness-200 filter"
+            className="h-14 md:h-16 w-auto object-contain"
           />
         </div>
 
-        {/* Title */}
-        <h2 className="font-sans text-xs md:text-sm font-bold tracking-[0.2em] text-white text-center mb-4 md:mb-6 uppercase">
+        {/* Title - dark for bright background */}
+        <h2 className="font-sans text-xs md:text-sm font-bold tracking-[0.2em] text-[#1c1917] text-center mb-4 md:mb-6 uppercase">
           SELECT YOUR SIGNATURE
         </h2>
 
@@ -91,22 +88,22 @@ export function ModeSelectionScreen() {
           <button
             type="button"
             onClick={() => setIsOpen(!isOpen)}
-            className="w-full bg-white flex items-center justify-between px-6 py-4 cursor-pointer outline-none border-none text-left"
+            className="w-full bg-[#1c1917] flex items-center justify-between px-6 py-4 cursor-pointer outline-none border-none text-left"
           >
             <div className="flex items-center">
-              <span className="text-[#888] text-xs font-sans font-bold tracking-wider mr-3 uppercase select-none">
+              <span className="text-stone-400 text-xs font-sans font-bold tracking-wider mr-3 uppercase select-none">
                 Mode:
               </span>
               <span
                 className={`font-sans font-semibold text-xs md:text-sm ${
-                  selectedMode ? "text-black" : "text-gray-400"
+                  selectedMode ? "text-white" : "text-stone-500"
                 }`}
               >
                 {getModeLabel(selectedMode)}
               </span>
             </div>
             <ChevronDown
-              className={`w-4 h-4 text-gray-500 transition-transform duration-300 ${
+              className={`w-4 h-4 text-stone-400 transition-transform duration-300 ${
                 isOpen ? "rotate-180" : ""
               }`}
             />
@@ -114,7 +111,7 @@ export function ModeSelectionScreen() {
 
           {/* Custom Dropdown Options */}
           {isOpen && (
-            <div className="absolute left-0 right-0 mt-1.5 bg-white border border-[#EAE8E2] shadow-2xl rounded-none py-1.5 z-[120] flex flex-col max-h-[220px] overflow-y-auto dropdown-scroll animate-dropdown-fade">
+            <div className="absolute left-0 right-0 mt-1.5 bg-[#1c1917] border border-stone-800 shadow-2xl rounded-none py-1.5 z-[120] flex flex-col max-h-[220px] overflow-y-auto dropdown-scroll animate-dropdown-fade">
               {OPTIONS.map((opt) => (
                 <button
                   key={opt.id}
@@ -125,8 +122,8 @@ export function ModeSelectionScreen() {
                   }}
                   className={`w-full px-6 py-3.5 md:py-2.5 text-left text-xs md:text-[13px] font-medium transition-colors flex items-center justify-between cursor-pointer ${
                     selectedMode === opt.id
-                      ? "text-accent bg-[#FAF9F5]/70"
-                      : "text-black hover:bg-[#FAF9F5]"
+                      ? "text-accent bg-stone-900"
+                      : "text-white hover:bg-stone-900"
                   }`}
                 >
                   <span className="font-sans font-semibold">{opt.label}</span>
@@ -142,17 +139,17 @@ export function ModeSelectionScreen() {
           type="button"
           onClick={handleEnter}
           disabled={!selectedMode}
-          className={`w-full font-sans font-bold tracking-[0.2em] text-xs py-3.5 md:py-4.5 transition-all duration-300 uppercase border border-zinc-900/10 md:border-white/5 ${
+          className={`w-full font-sans font-bold tracking-[0.2em] text-xs py-3.5 md:py-4.5 transition-all duration-300 uppercase border border-none ${
             selectedMode
-              ? "bg-[#333]/90 hover:bg-[#222]/90 text-white cursor-pointer hover:border-white/25 active:scale-[0.98]"
-              : "bg-zinc-900/10 text-zinc-900/40 md:bg-white/10 md:text-white/30 cursor-not-allowed"
+              ? "bg-[#1c1917] hover:bg-[#2e2a27] text-white cursor-pointer active:scale-[0.98]"
+              : "bg-black/10 text-stone-500/50 cursor-not-allowed"
           }`}
         >
           ENTER SITE
         </button>
 
         {/* Small T&C link */}
-        <span className="text-[10px] tracking-widest text-white/40 hover:text-white/60 font-medium uppercase mt-4 md:mt-6 transition-colors cursor-pointer">
+        <span className="text-[10px] tracking-widest text-stone-500 hover:text-stone-800 font-medium uppercase mt-4 md:mt-6 transition-colors cursor-pointer">
           Terms & Conditions
         </span>
       </div>
