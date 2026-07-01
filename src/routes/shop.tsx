@@ -54,10 +54,10 @@ function Shop() {
     <SiteLayout>
       <section className="max-w-[1400px] mx-auto px-6 lg:px-12 pt-6 lg:pt-10 pb-20">
         <h1 className="font-display text-5xl md:text-6xl lg:text-7xl leading-tight max-w-3xl">
-          Discover Your Signature Scent
+          We Make Fuckin Great Parfum
         </h1>
         <p className="mt-6 text-muted-foreground max-w-2xl leading-relaxed">
-          Explore expertly crafted fragrances designed to match every mood, moment, and personality. From fresh daytime notes to rich evening blends, find the scent that becomes uniquely yours.
+          We sell emotions &amp; moments
         </p>
 
         <div className="mt-10 flex flex-wrap gap-3">
