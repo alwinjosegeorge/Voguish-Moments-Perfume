@@ -79,8 +79,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "keywords", content: "voguish moments, perfume in kerala, premium fragrance oils, luxury perfumes, long lasting perfume, buy perfume online kerala, best perfumes india, signature scents, non alcoholic perfume, custom perfume" },
       { property: "og:title", content: "Voguish Moments — Kerala's First Niche Brand" },
       { property: "og:description", content: "Father India + Mother France product = World Class Premium quality. Discover premium, luxury, and long-lasting signature fragrance oils." },
+      { property: "og:image", content: "https://voguishmoments.vercel.app/og-image.jpg" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: "https://voguishmoments.vercel.app/og-image.jpg" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
