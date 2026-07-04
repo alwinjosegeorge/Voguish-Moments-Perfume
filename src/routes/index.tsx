@@ -21,12 +21,20 @@ import oilsPageHeaderImage from "@/assets/oils-page-header-image.webp";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Voguish Moments — Where Luxury Perfume Begins" },
+      { title: "Voguish Moments — Kerala's First Niche Brand" },
       {
         name: "description",
         content:
-          "Discover Voguish Moments signature perfumes, crafted with high-grade ingredients sourced from France by Raa.",
+          "Father India + Mother France product = World Class Premium quality. Discover premium, luxury, and long-lasting signature fragrance oils.",
       },
+      { property: "og:title", content: "Voguish Moments — Kerala's First Niche Brand" },
+      {
+        property: "og:description",
+        content:
+          "Father India + Mother France product = World Class Premium quality. Discover premium, luxury, and long-lasting signature fragrance oils.",
+      },
+      { property: "og:image", content: "https://voguishmoments.vercel.app/og-image.jpg" },
+      { name: "twitter:image", content: "https://voguishmoments.vercel.app/og-image.jpg" },
     ],
   }),
   component: Home,
