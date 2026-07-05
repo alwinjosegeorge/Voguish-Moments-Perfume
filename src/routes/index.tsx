@@ -188,15 +188,17 @@ function Hero({ allProducts }: { allProducts: any[] }) {
                 <ArrowRight className="w-4 h-4" />
               </span>
             </Link>
-            <div className="hidden lg:flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full border border-dashed border-accent flex items-center justify-center">
-                <User className="w-5 h-5 text-muted-foreground" />
+            {mode !== "MESSI_EDITION" && (
+              <div className="hidden lg:flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full border border-dashed border-accent flex items-center justify-center">
+                  <User className="w-5 h-5 text-muted-foreground" />
+                </div>
+                <div className="text-left">
+                  <div className="font-display text-xl">20K +</div>
+                  <div className="text-sm text-muted-foreground">Happy customers</div>
+                </div>
               </div>
-              <div className="text-left">
-                <div className="font-display text-xl">20K +</div>
-                <div className="text-sm text-muted-foreground">Happy customers</div>
-              </div>
-            </div>
+            )}
           </div>
         </div>
 
