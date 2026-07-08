@@ -7,6 +7,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { PRODUCTS } from "@/data/catalog";
 import { useMode } from "@/context/ModeContext";
 import { getProducts } from "@/lib/productService";
+import { getProductsDb } from "@/lib/api/dbFunctions";
 
 import divorceHero from "@/assets/divorce-hero.webp";
 import seductionHeroImg from "@/assets/seduction-1.webp";
@@ -19,6 +20,13 @@ import divorceLotionHero from "@/assets/divorce-lotion-hero.webp";
 import oilsPageHeaderImage from "@/assets/oils-page-header-image.webp";
 
 export const Route = createFileRoute("/")({
+  loader: () => {
+    // Non-blocking server-side database pre-warm to wake up Neon PostgreSQL instantly
+    getProductsDb().catch((err) => {
+      console.warn("[Database] Background pre-warm failed/timed out:", err);
+    });
+    return {};
+  },
   head: () => ({
     meta: [
       { title: "Voguish Moments — Kerala's First Niche Brand" },
