@@ -5,6 +5,7 @@ import { SiteLayout } from "@/components/SiteLayout";
 import { ProductCard } from "@/components/ProductCard";
 import { PRODUCTS } from "@/data/catalog";
 import { getProducts } from "@/lib/productService";
+import { trackPixelEvent } from "../lib/metaPixel";
 
 type S = { q?: string };
 
@@ -33,6 +34,12 @@ function SearchPage() {
       active = false;
     };
   }, []);
+
+  useEffect(() => {
+    if (q && q.trim()) {
+      trackPixelEvent("Search", { search_string: q.trim() });
+    }
+  }, [q]);
 
   const query = (q ?? "").trim().toLowerCase();
   const results = query

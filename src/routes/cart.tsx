@@ -4,6 +4,7 @@ import { Minus, Plus, X, Check, ShoppingBag, ChevronDown } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { useCart } from "@/lib/cart";
 import { createOrderDb } from "@/lib/api/dbFunctions";
+import { trackPixelEvent } from "../lib/metaPixel";
 
 export const Route = createFileRoute("/cart")({
   head: () => ({
@@ -101,7 +102,26 @@ function CartPage() {
   const [deliveryDistrict, setDeliveryDistrict] = useState("");
   const [deliveryPin, setDeliveryPin] = useState("");
 
+  const getCookieClient = (name: string): string | null => {
+    if (typeof document === "undefined") return null;
+    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    if (match) return match[2];
+    return null;
+  };
+
   const submitOrder = (orderId: string, paymentId: string) => {
+    const purchaseDetails = {
+      value: total,
+      currency: "INR",
+      content_ids: detailed.map(d => d.product.slug),
+      content_type: "product",
+      contents: detailed.map(d => ({
+        id: d.product.slug,
+        quantity: d.qty,
+        price: d.price
+      }))
+    };
+
     const newOrder = {
       id: orderId,
       customerName: customerName.trim(),
@@ -130,10 +150,13 @@ function CartPage() {
         month: "long",
         day: "numeric",
       }) + " at " + new Date().toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit' }),
+      fbp: getCookieClient("_fbp"),
+      fbc: getCookieClient("_fbc"),
     };
 
     createOrderDb({ data: newOrder })
       .then(() => {
+        trackPixelEvent("Purchase", purchaseDetails, { eventID: orderId });
         clear();
         setOrderPlaced(orderId);
       })
@@ -466,7 +489,16 @@ function CartPage() {
                 <div className="border-t border-border pt-3 flex justify-between font-medium text-base"><span>Total</span><span className="font-bold">₹{total.toLocaleString("en-IN")}</span></div>
               </div>
               <button
-                onClick={() => setIsCheckingOut(true)}
+                onClick={() => {
+                  setIsCheckingOut(true);
+                  trackPixelEvent("InitiateCheckout", {
+                    value: total,
+                    currency: "INR",
+                    content_ids: detailed.map(d => d.product.slug),
+                    content_type: "product",
+                    num_items: count
+                  });
+                }}
                 className="mt-6 w-full bg-[#000000] hover:bg-zinc-900 text-white rounded-full py-4 font-bold text-xs tracking-[0.15em] uppercase cursor-pointer shadow-md flex items-center justify-center gap-2.5 transition-all hover:scale-[1.01] active:scale-[0.99]"
               >
                 <ShoppingBag className="w-4 h-4 text-white fill-none stroke-[2]" />

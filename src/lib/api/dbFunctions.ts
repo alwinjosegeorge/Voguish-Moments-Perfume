@@ -1,5 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
+import { getRequestHeaders, getRequestIP } from "@tanstack/react-start/server";
 import { pool } from "../db.server";
+import { sendMetaCapiEvent } from "../metaCapi.server";
 import { Product, getMergedProducts, PRODUCTS } from "@/data/catalog";
 import { z } from "zod";
 import path from "path";
@@ -162,6 +164,8 @@ export const createOrderDb = createServerFn({ method: "POST" })
       total: z.number(),
       status: z.string().optional(),
       dateString: z.string().optional().nullable(),
+      fbp: z.string().optional().nullable(),
+      fbc: z.string().optional().nullable(),
     })
   )
   .handler(async ({ data }) => {
@@ -192,6 +196,47 @@ export const createOrderDb = createServerFn({ method: "POST" })
         input.dateString || null,
       ]
     );
+
+    // Conversions API tracking
+    try {
+      const headers = getRequestHeaders();
+      const userAgent = headers["user-agent"] || undefined;
+      const clientIp = getRequestIP({ xForwardedFor: true }) || undefined;
+
+      const nameParts = input.customerName.trim().split(/\s+/);
+      const firstName = nameParts[0] || "";
+      const lastName = nameParts.slice(1).join(" ") || "";
+
+      sendMetaCapiEvent({
+        eventName: "Purchase",
+        eventId: input.id,
+        eventSourceUrl: "https://voguishmoments.com/cart",
+        userData: {
+          phone: input.customerPhone,
+          firstName,
+          lastName,
+          clientIpAddress: clientIp,
+          clientUserAgent: userAgent,
+          fbp: input.fbp || undefined,
+          fbc: input.fbc || undefined,
+        },
+        customData: {
+          value: input.total,
+          currency: "INR",
+          contents: input.items.map((item: any) => ({
+            id: item.slug,
+            quantity: item.qty,
+            price: item.price,
+          })),
+          content_type: "product",
+        },
+      }).catch((err) => {
+        console.error("[Meta CAPI] Event transmission failed asynchronously:", err);
+      });
+    } catch (capiError) {
+      console.error("[Meta CAPI] Error preparing or sending CAPI event:", capiError);
+    }
+
     return { success: true };
   });
 

@@ -7,8 +7,9 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { type ReactNode } from "react";
+import { type ReactNode, useEffect } from "react";
 import { ModeProvider } from "@/context/ModeContext";
+import { initMetaPixel } from "../lib/metaPixel";
 
 import appCss from "../styles.css?url";
 
@@ -114,6 +115,21 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const router = useRouter();
+  const pathname = router.state.location.pathname;
+  const search = router.state.location.search;
+
+  useEffect(() => {
+    initMetaPixel();
+  }, []);
+
+  useEffect(() => {
+    // Avoid double tracking pageview on initial load since initMetaPixel already fires PageView.
+    // If the pixel is initialized, track pageview on pathname or search changes.
+    if (typeof window !== "undefined" && (window as any).fbq && pathname) {
+      (window as any).fbq("track", "PageView");
+    }
+  }, [pathname, search]);
 
   return (
     <QueryClientProvider client={queryClient}>

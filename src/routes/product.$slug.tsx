@@ -6,6 +6,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { PRODUCTS } from "@/data/catalog";
 import { getProductsSync, getProducts } from "@/lib/productService";
 import { useCart, getPriceForSize } from "@/lib/cart";
+import { trackPixelEvent } from "../lib/metaPixel";
 
 export const Route = createFileRoute("/product/$slug")({
   loader: ({ params }) => {
@@ -79,6 +80,18 @@ function ProductPage() {
         setFadeOpacity(1);
       }, 100);
       setIsExpanded(false);
+    }
+  }, [product, selectedSize]);
+
+  useEffect(() => {
+    if (product) {
+      trackPixelEvent("ViewContent", {
+        content_name: product.name,
+        content_ids: [product.slug],
+        content_type: "product",
+        value: getPriceForSize(product, selectedSize),
+        currency: "INR",
+      });
     }
   }, [product, selectedSize]);
 
@@ -272,6 +285,14 @@ function ProductPage() {
                 <button
                   onClick={() => {
                     add(product.slug, qty, selectedSize);
+                    trackPixelEvent("AddToCart", {
+                      content_name: product.name,
+                      content_ids: [product.slug],
+                      content_type: "product",
+                      value: getPriceForSize(product, selectedSize) * qty,
+                      currency: "INR",
+                      quantity: qty,
+                    });
                     setToastMessage(`Added ${product.name} (${selectedSize}) x${qty} to cart!`);
                     setTimeout(() => setToastMessage(null), 3500);
                   }}
@@ -282,6 +303,14 @@ function ProductPage() {
                 <button
                   onClick={() => {
                     add(product.slug, qty, selectedSize);
+                    trackPixelEvent("AddToCart", {
+                      content_name: product.name,
+                      content_ids: [product.slug],
+                      content_type: "product",
+                      value: getPriceForSize(product, selectedSize) * qty,
+                      currency: "INR",
+                      quantity: qty,
+                    });
                     router.navigate({ to: "/cart" });
                   }}
                   className="flex-1 bg-[#1c1917] hover:bg-foreground/90 text-white rounded-full px-6 py-3.5 flex items-center justify-center gap-2 text-xs font-light tracking-[0.18em] uppercase transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer shadow-md shadow-stone-900/10"
