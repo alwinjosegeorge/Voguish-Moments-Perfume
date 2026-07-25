@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Instagram, Phone, MessageSquare } from "lucide-react";
+import { Instagram, Phone, MessageSquare, MapPin } from "lucide-react";
 import { VoguishMomentsLogo } from "./Header";
 
 export function Footer() {
@@ -29,6 +29,12 @@ export function Footer() {
               <span className="text-muted-foreground">Instagram:</span>
               <a href="https://www.instagram.com/voguishmoments?igsh=MWJiMnUyb3UxejFobw==" target="_blank" rel="noopener noreferrer" className="font-semibold hover:text-accent">@voguishmoments</a>
             </div>
+            <div className="flex items-center gap-2.5 mt-0.5">
+              <MapPin className="w-4 h-4 text-muted-foreground" />
+              <Link to="/track" className="font-semibold hover:text-accent text-foreground">
+                Track Your Order
+              </Link>
+            </div>
           </div>
         </div>
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-6">
@@ -36,6 +42,7 @@ export function Footer() {
             <Link to="/" className="hover:text-accent">Home</Link>
             <Link to="/about" className="hover:text-accent">About Us</Link>
             <Link to="/contact" className="hover:text-accent">Contact Us</Link>
+            <Link to="/track" className="hover:text-accent">Track Order</Link>
             <Link to="/shipping-policy" className="hover:text-accent">Shipping &amp; Return</Link>
             <Link to="/refund-policy" className="hover:text-accent">Refund Policy</Link>
             <Link to="/privacy-policy" className="hover:text-accent">Privacy Policy</Link>
