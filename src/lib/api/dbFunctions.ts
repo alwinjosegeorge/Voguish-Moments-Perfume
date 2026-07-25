@@ -334,4 +334,68 @@ export const getOrderByIdDb = createServerFn({ method: "GET" })
     };
   });
 
+export const searchOrdersDb = createServerFn({ method: "POST" })
+  .validator(z.object({ query: z.string() }))
+  .handler(async ({ data }) => {
+    const rawQuery = data.query.trim();
+    if (!rawQuery) {
+      return { type: "NONE", orders: [] };
+    }
+
+    const mapDbOrderRow = (row: any) => ({
+      id: row.id,
+      customerName: row.customer_name,
+      customerPhone: row.customer_phone,
+      deliveryAddress: {
+        house: row.delivery_house,
+        area: row.delivery_area,
+        district: row.delivery_district,
+        state: row.delivery_state,
+        pin: row.delivery_pin,
+      },
+      paymentId: row.payment_id || undefined,
+      items: row.items,
+      subtotal: row.subtotal,
+      shipping: row.shipping,
+      total: row.total,
+      status: row.status,
+      date: row.date_string,
+      statusHistory: row.status_history || [],
+      createdAt: row.created_at,
+    });
+
+    // 1. Try exact Order ID search
+    const idRes = await pool.query(
+      "SELECT * FROM orders WHERE LOWER(id) = LOWER($1)",
+      [rawQuery]
+    );
+    if (idRes.rows.length > 0) {
+      return {
+        type: "EXACT",
+        orders: idRes.rows.map(mapDbOrderRow),
+      };
+    }
+
+    // 2. Try phone number search (clean non-digits)
+    const cleanDigits = rawQuery.replace(/\D/g, "");
+    if (cleanDigits.length >= 8) {
+      const last10 = cleanDigits.slice(-10);
+      const phoneRes = await pool.query(
+        "SELECT * FROM orders WHERE REGEXP_REPLACE(customer_phone, '\\\\D', '', 'g') LIKE $1 OR customer_phone LIKE $2 ORDER BY created_at DESC",
+        [`%${last10}`, `%${rawQuery}%`]
+      );
+      if (phoneRes.rows.length > 0) {
+        return {
+          type: "LIST",
+          orders: phoneRes.rows.map(mapDbOrderRow),
+        };
+      }
+    }
+
+    return {
+      type: "NONE",
+      orders: [],
+    };
+  });
+
 
