@@ -1,6 +1,6 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { Search, MapPin, ChevronRight, Loader2, AlertCircle, ArrowLeft } from "lucide-react";
+import { Search, MapPin, ChevronRight, Loader2, AlertCircle } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { searchOrdersDb } from "@/lib/api/dbFunctions";
 
@@ -59,7 +59,7 @@ function TrackIndexPage() {
         setOrdersList(res.orders);
         setHasSearched(true);
       } else {
-        setError("No orders found for this Order ID or Phone Number. Please check the spelling and try again.");
+        setError("No orders found for this Order ID or Phone Number. Please check the number and try again.");
         setHasSearched(true);
       }
     } catch (err) {
@@ -79,17 +79,39 @@ function TrackIndexPage() {
 
   return (
     <SiteLayout bypassModeSelection={true}>
-      <div className="flex-1 py-16 px-6 max-w-4xl mx-auto w-full text-center">
+      <div className="flex-1 py-10 px-4 sm:px-6 max-w-4xl mx-auto w-full">
         
         {/* Render Search Results view when query is active */}
         {q ? (
-          <div className="text-left animate-fade-up max-w-2xl mx-auto">
-            <button 
-              onClick={() => navigate({ to: "/track", search: {} })}
-              className="inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors mb-6 uppercase tracking-wider cursor-pointer"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" /> Search Again
-            </button>
+          <div className="space-y-6 animate-fade-up max-w-2xl mx-auto text-left">
+            {/* Top Navigation & Compact Search Bar */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border/60">
+              <div>
+                <h1 className="font-display text-2xl text-foreground">Track Order</h1>
+                <p className="text-[11px] text-muted-foreground mt-0.5">
+                  Results for: <span className="font-semibold text-foreground">{q}</span>
+                </p>
+              </div>
+              
+              {/* Compact Search Input */}
+              <form onSubmit={handleSubmit} className="flex gap-2 w-full sm:max-w-xs">
+                <input
+                  required
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Order ID or Phone"
+                  className="flex-1 bg-[#FAF9F5] border border-border rounded-xl px-3.5 py-2 text-xs font-semibold outline-none focus:ring-1 focus:ring-accent"
+                />
+                <button 
+                  type="submit" 
+                  disabled={loading}
+                  className="bg-foreground text-background hover:bg-foreground/90 rounded-xl px-4 py-2 text-xs font-bold uppercase tracking-wider cursor-pointer transition-all active:scale-95 flex items-center justify-center min-w-[70px]"
+                >
+                  {loading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : "Search"}
+                </button>
+              </form>
+            </div>
 
             {loading ? (
               <div className="bg-card border border-border/80 rounded-3xl p-12 text-center shadow-lg shadow-stone-100/50 flex flex-col items-center justify-center gap-4">
@@ -98,17 +120,15 @@ function TrackIndexPage() {
               </div>
             ) : (
               <div className="space-y-6">
-                <div>
-                  <h1 className="font-display text-3xl text-foreground mb-1">Search Results</h1>
-                  <p className="text-xs text-muted-foreground">Showing matching orders for: <span className="font-semibold text-foreground">{q}</span></p>
-                </div>
-
                 {/* Error Alert */}
                 {error && (
                   <div className="bg-amber-50 border border-amber-200/60 rounded-2xl p-5 flex gap-3 text-left">
                     <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
                     <div className="space-y-3">
-                      <p className="text-xs text-amber-800 leading-relaxed font-medium">{error}</p>
+                      <div className="space-y-0.5">
+                        <h4 className="font-bold text-xs text-amber-900">No Orders Found</h4>
+                        <p className="text-xs text-amber-800 leading-relaxed font-medium">{error}</p>
+                      </div>
                       <button 
                         onClick={() => navigate({ to: "/track", search: {} })}
                         className="bg-foreground text-background font-bold text-[10px] uppercase tracking-wider py-2.5 px-4 rounded-xl hover:bg-foreground/90 transition-all cursor-pointer"
@@ -130,7 +150,7 @@ function TrackIndexPage() {
                       {ordersList.map((order) => (
                         <div 
                           key={order.id} 
-                          className="bg-card border border-border/80 rounded-2xl p-5 md:p-6 hover:border-accent/40 hover:shadow-md hover:shadow-stone-50 transition-all flex flex-col md:flex-row md:items-center justify-between gap-5"
+                          className="bg-card border border-border/80 rounded-2xl p-5 md:p-6 hover:border-accent/40 hover:shadow-md hover:shadow-stone-50 transition-all flex flex-col md:flex-row md:items-center justify-between gap-5 animate-fade-up"
                         >
                           <div className="space-y-1.5 flex-1 min-w-0">
                             <div className="flex flex-wrap items-center gap-2.5">
@@ -152,14 +172,19 @@ function TrackIndexPage() {
                               <span>💰 ₹{order.total.toLocaleString("en-IN")}</span>
                             </div>
                             
-                            <div className="text-xs font-semibold text-foreground/80 truncate max-w-sm sm:max-w-md md:max-w-lg mt-1 bg-[#FAF9F5]/70 border border-border/40 rounded-lg px-2.5 py-1.5 inline-block">
-                              {order.items.map((it: any) => `${it.name} (${it.size})`).join(", ")}
+                            {/* PREMIUM TAGGED ITEM LIST - Wraps perfectly and never overflows on mobile! */}
+                            <div className="flex flex-wrap gap-1.5 mt-2 bg-[#FAF9F5]/70 border border-border/40 rounded-xl p-2 max-w-full">
+                              {order.items.map((it: any, i: number) => (
+                                <span key={i} className="bg-white border border-border/50 px-2 py-0.5 rounded-md text-[10px] font-semibold text-foreground/80 whitespace-nowrap">
+                                  {it.name} ({it.size}){it.qty > 1 ? ` x${it.qty}` : ""}
+                                </span>
+                              ))}
                             </div>
                           </div>
                           
                           <button
                             onClick={() => navigate({ to: `/track/${order.id}` })}
-                            className="bg-[#1c1917] hover:bg-[#1c1917]/90 text-white rounded-xl py-3 px-5 text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-sm active:scale-[0.98] self-start md:self-auto"
+                            className="bg-[#1c1917] hover:bg-[#1c1917]/90 text-white rounded-xl py-3 px-5 text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-sm active:scale-[0.98] self-start md:self-auto flex-shrink-0"
                           >
                             Track Live <ChevronRight className="w-3.5 h-3.5" />
                           </button>
@@ -172,8 +197,8 @@ function TrackIndexPage() {
             )}
           </div>
         ) : (
-          /* Render main search form */
-          <div className="max-w-md w-full bg-card border border-border/80 rounded-3xl p-8 md:p-10 mx-auto shadow-lg shadow-stone-100/50 animate-fade-up">
+          /* Main Landing search form card (when q is empty) */
+          <div className="max-w-md w-full bg-card border border-border/80 rounded-3xl p-8 md:p-10 mx-auto shadow-lg shadow-stone-100/50 animate-fade-up mt-10 text-center">
             <div className="w-12 h-12 rounded-full bg-accent/5 text-accent flex items-center justify-center mx-auto mb-6">
               <MapPin className="w-6 h-6 text-foreground/80" />
             </div>
