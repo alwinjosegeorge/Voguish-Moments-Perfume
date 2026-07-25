@@ -24,7 +24,7 @@ function TrackIndexPage() {
   };
 
   return (
-    <SiteLayout>
+    <SiteLayout bypassModeSelection={true}>
       <div className="flex-1 flex items-center justify-center py-20 px-6">
         <div className="max-w-md w-full bg-card border border-border/80 rounded-3xl p-8 md:p-10 text-center shadow-lg shadow-stone-100/50">
           <div className="w-12 h-12 rounded-full bg-accent/5 text-accent flex items-center justify-center mx-auto mb-6">

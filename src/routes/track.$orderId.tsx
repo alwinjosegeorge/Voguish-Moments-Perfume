@@ -26,7 +26,7 @@ export const Route = createFileRoute("/track/$orderId")({
   }),
   component: TrackDetailPage,
   errorComponent: () => (
-    <SiteLayout>
+    <SiteLayout bypassModeSelection={true}>
       <div className="flex-1 flex flex-col items-center justify-center py-20 px-6">
         <div className="max-w-md text-center">
           <h2 className="font-display text-4xl mb-4">Order Not Found</h2>
@@ -112,7 +112,7 @@ function TrackDetailPage() {
   }
 
   return (
-    <SiteLayout>
+    <SiteLayout bypassModeSelection={true}>
       <div className="max-w-[1100px] mx-auto px-6 lg:px-12 pt-6 lg:pt-10 pb-16">
         <Link 
           to="/track"

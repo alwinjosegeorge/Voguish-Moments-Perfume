@@ -5,14 +5,14 @@ import { useMode } from "@/context/ModeContext";
 import { ModeSelectionScreen } from "./ModeSelectionScreen";
 import { startPreloading } from "@/lib/productService";
 
-export function SiteLayout({ children }: { children: ReactNode }) {
+export function SiteLayout({ children, bypassModeSelection = false }: { children: ReactNode; bypassModeSelection?: boolean }) {
   const { mode } = useMode();
 
   useEffect(() => {
     startPreloading();
   }, []);
 
-  if (!mode) {
+  if (!mode && !bypassModeSelection) {
     return <ModeSelectionScreen />;
   }
 
