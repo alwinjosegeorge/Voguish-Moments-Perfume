@@ -293,6 +293,28 @@ ${order.deliveryAddress.district}, ${order.deliveryAddress.state} - ${order.deli
       .catch((err) => console.error("Failed to update status:", err));
   };
 
+  const handleSendWhatsApp = (order: any) => {
+    let phone = order.customerPhone.replace(/\D/g, "");
+    if (phone.length === 10) {
+      phone = "91" + phone;
+    }
+    const trackingLink = `${window.location.origin}/track/${order.id}`;
+    const message = `Your payment was successful! 👍🏼
+Thank you for trusting Voguish Moments with your order.
+
+Please allow us a little time to verify your order on our end and prepare your perfume for dispatch. Once everything is confirmed, we'll update you shortly. 😊
+
+Your order will be shipped through DTDC. Your tracking ID will be sent directly to you by our courier partner tonight. 📦
+
+You can also track your order live here: ${trackingLink} 🔍
+
+Thank you for choosing Voguish Moments. We truly appreciate your support and hope you love your fragrance! ❤️`;
+
+    const encoded = encodeURIComponent(message);
+    const url = `https://wa.me/${phone}?text=${encoded}`;
+    window.open(url, "_blank");
+  };
+
   const handleDeleteOrder = (orderId: string) => {
     if (!confirm("Are you sure you want to delete this order?")) return;
     deleteOrderDb({ data: { id: orderId } })
@@ -737,6 +759,14 @@ ${order.deliveryAddress.district}, ${order.deliveryAddress.state} - ${order.deli
                             <option value="SHIPPED">SHIPPED</option>
                             <option value="DELIVERED">DELIVERED</option>
                           </select>
+                          
+                          <button
+                            type="button"
+                            onClick={() => handleSendWhatsApp(selectedOrder)}
+                            className="w-full mt-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl py-3 px-4 text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm active:scale-[0.98]"
+                          >
+                            <span className="text-sm">💬</span> Send WhatsApp Confirmation
+                          </button>
                         </div>
                       </div>
                     ) : (

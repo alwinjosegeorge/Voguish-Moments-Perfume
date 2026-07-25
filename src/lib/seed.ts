@@ -49,6 +49,7 @@ async function main() {
         total INT NOT NULL,
         status VARCHAR(50) DEFAULT 'WAITING',
         date_string VARCHAR(255),
+        status_history JSONB DEFAULT '[]'::jsonb,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);

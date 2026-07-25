@@ -170,13 +170,15 @@ export const createOrderDb = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     const input = data;
+    const initialStatus = input.status || "WAITING";
+    const initialHistory = [{ status: initialStatus, timestamp: new Date().toISOString() }];
     await pool.query(
       `
       INSERT INTO orders (
         id, customer_name, customer_phone, delivery_house, delivery_area, 
         delivery_district, delivery_state, delivery_pin, payment_id, 
-        items, subtotal, shipping, total, status, date_string
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+        items, subtotal, shipping, total, status, date_string, status_history
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
     `,
       [
         input.id,
@@ -192,8 +194,9 @@ export const createOrderDb = createServerFn({ method: "POST" })
         input.subtotal,
         input.shipping,
         input.total,
-        input.status || "WAITING",
+        initialStatus,
         input.dateString || null,
+        JSON.stringify(initialHistory),
       ]
     );
 
@@ -261,6 +264,7 @@ export const getOrdersDb = createServerFn({ method: "GET" })
       total: row.total,
       status: row.status,
       date: row.date_string,
+      statusHistory: row.status_history || [],
     }));
   });
 
@@ -268,7 +272,26 @@ export const updateOrderStatusDb = createServerFn({ method: "POST" })
   .validator(z.object({ id: z.string(), status: z.string() }))
   .handler(async ({ data }) => {
     const input = data;
-    await pool.query("UPDATE orders SET status = $1 WHERE id = $2", [input.status, input.id]);
+    
+    // Fetch existing status history
+    const res = await pool.query("SELECT status_history FROM orders WHERE id = $1", [input.id]);
+    let history = [];
+    if (res.rows.length > 0 && res.rows[0].status_history) {
+      history = typeof res.rows[0].status_history === "string" 
+        ? JSON.parse(res.rows[0].status_history) 
+        : res.rows[0].status_history;
+    }
+    if (!Array.isArray(history)) {
+      history = [];
+    }
+    
+    // Append the new status update with timestamp
+    history.push({ status: input.status, timestamp: new Date().toISOString() });
+
+    await pool.query(
+      "UPDATE orders SET status = $1, status_history = $2 WHERE id = $3", 
+      [input.status, JSON.stringify(history), input.id]
+    );
     return { success: true };
   });
 
@@ -278,6 +301,37 @@ export const deleteOrderDb = createServerFn({ method: "POST" })
     const input = data;
     await pool.query("DELETE FROM orders WHERE id = $1", [input.id]);
     return { success: true };
+  });
+
+export const getOrderByIdDb = createServerFn({ method: "GET" })
+  .validator(z.object({ id: z.string() }))
+  .handler(async ({ data }) => {
+    const res = await pool.query("SELECT * FROM orders WHERE id = $1", [data.id]);
+    if (res.rows.length === 0) {
+      return null;
+    }
+    const row = res.rows[0];
+    return {
+      id: row.id,
+      customerName: row.customer_name,
+      customerPhone: row.customer_phone,
+      deliveryAddress: {
+        house: row.delivery_house,
+        area: row.delivery_area,
+        district: row.delivery_district,
+        state: row.delivery_state,
+        pin: row.delivery_pin,
+      },
+      paymentId: row.payment_id || undefined,
+      items: row.items,
+      subtotal: row.subtotal,
+      shipping: row.shipping,
+      total: row.total,
+      status: row.status,
+      date: row.date_string,
+      statusHistory: row.status_history || [],
+      createdAt: row.created_at,
+    };
   });
 
 
