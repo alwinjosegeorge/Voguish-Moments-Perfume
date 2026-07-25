@@ -269,7 +269,7 @@ ${order.deliveryAddress.district}, ${order.deliveryAddress.state} - ${order.deli
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (passcode === "5555") {
+    if (passcode === "SACRIFICE-810") {
       setIsAuthenticated(true);
       setAuthError(false);
       sessionStorage.setItem("voguishmoments_control_panel_auth", "true");
@@ -433,7 +433,7 @@ Thank you for choosing Voguish Moments. We truly appreciate your support and hop
                 autoFocus
                 value={passcode}
                 onChange={(e) => setPasscode(e.target.value)}
-                placeholder="••••"
+                placeholder="Enter Passcode"
                 className="w-full bg-[#FAF9F5] border border-border rounded-xl px-4 py-3.5 text-center text-lg font-bold tracking-widest outline-none focus:ring-1 focus:ring-accent"
               />
             </div>
