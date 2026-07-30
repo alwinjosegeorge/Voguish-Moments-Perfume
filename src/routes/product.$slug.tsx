@@ -248,19 +248,27 @@ function ProductPage() {
             <div className="mt-8">
               <div className="text-[10px] font-light tracking-[0.2em] text-muted-foreground uppercase mb-3">Size</div>
               <div className="flex gap-3 flex-wrap">
-                {sizeOptions.map((sizeOption) => (
-                   <button
-                     key={sizeOption}
-                     onClick={() => setSelectedSize(sizeOption)}
-                     className={`px-6 py-3 rounded-xl border text-xs font-light tracking-widest uppercase transition-all cursor-pointer ${
-                       selectedSize === sizeOption
-                         ? "bg-[#1c1917] text-white border-[#1c1917] shadow-md shadow-stone-900/10 scale-[1.02]"
-                         : "bg-[#FAF9F5] border-border/70 hover:border-foreground/30 text-muted-foreground"
-                     }`}
-                   >
-                     {sizeOption}
-                   </button>
-                ))}
+                {sizeOptions.map((sizeOption) => {
+                   const isSizeOutOfStock = product.outOfStock && product.outOfStock.includes(sizeOption);
+                   return (
+                     <button
+                       key={sizeOption}
+                       onClick={() => setSelectedSize(sizeOption)}
+                       className={`px-6 py-3 rounded-xl border text-xs font-light tracking-widest uppercase transition-all cursor-pointer ${
+                         selectedSize === sizeOption
+                           ? "bg-[#1c1917] text-white border-[#1c1917] shadow-md shadow-stone-900/10 scale-[1.02]"
+                           : "bg-[#FAF9F5] border-border/70 hover:border-foreground/30 text-muted-foreground"
+                       } ${isSizeOutOfStock ? "opacity-60 line-through" : ""}`}
+                     >
+                       {sizeOption}
+                       {isSizeOutOfStock && (
+                         <span className="text-[9px] block text-red-500 font-bold normal-case tracking-normal mt-0.5">
+                           (Out of stock)
+                         </span>
+                       )}
+                     </button>
+                   );
+                })}
               </div>
             </div>
 
@@ -275,50 +283,67 @@ function ProductPage() {
             )}
 
             {/* Add to Cart / Buy Now Controls */}
-            <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-              <div className="flex items-center border border-border rounded-full self-start sm:self-auto shrink-0 bg-[#FAF9F5]/40">
-                <button onClick={() => setQty(Math.max(1, qty - 1))} className="w-12 h-12 flex items-center justify-center hover:text-accent cursor-pointer"><Minus className="w-4 h-4" /></button>
-                <span className="w-8 text-center text-sm font-semibold">{qty}</span>
-                <button onClick={() => setQty(qty + 1)} className="w-12 h-12 flex items-center justify-center hover:text-accent cursor-pointer"><Plus className="w-4 h-4" /></button>
-              </div>
-              <div className="flex-1 flex gap-3">
-                <button
-                  onClick={() => {
-                    add(product.slug, qty, selectedSize);
-                    trackPixelEvent("AddToCart", {
-                      content_name: product.name,
-                      content_ids: [product.slug],
-                      content_type: "product",
-                      value: getPriceForSize(product, selectedSize) * qty,
-                      currency: "INR",
-                      quantity: qty,
-                    });
-                    setToastMessage(`Added ${product.name} (${selectedSize}) x${qty} to cart!`);
-                    setTimeout(() => setToastMessage(null), 3500);
-                  }}
-                  className="flex-1 bg-white hover:bg-[#FAF9F5] border border-border text-foreground rounded-full px-6 py-3.5 flex items-center justify-center gap-2 text-xs font-light tracking-[0.18em] uppercase transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
-                >
-                  <ShoppingBag className="w-4 h-4" /> Add to Cart
-                </button>
-                <button
-                  onClick={() => {
-                    add(product.slug, qty, selectedSize);
-                    trackPixelEvent("AddToCart", {
-                      content_name: product.name,
-                      content_ids: [product.slug],
-                      content_type: "product",
-                      value: getPriceForSize(product, selectedSize) * qty,
-                      currency: "INR",
-                      quantity: qty,
-                    });
-                    router.navigate({ to: "/cart" });
-                  }}
-                  className="flex-1 bg-[#1c1917] hover:bg-foreground/90 text-white rounded-full px-6 py-3.5 flex items-center justify-center gap-2 text-xs font-light tracking-[0.18em] uppercase transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer shadow-md shadow-stone-900/10"
-                >
-                  Buy Now
-                </button>
-              </div>
-            </div>
+            {(() => {
+              const isOutOfStock = product.outOfStock && product.outOfStock.includes(selectedSize);
+              return (
+                <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                  <div className="flex items-center border border-border rounded-full self-start sm:self-auto shrink-0 bg-[#FAF9F5]/40">
+                    <button onClick={() => setQty(Math.max(1, qty - 1))} className="w-12 h-12 flex items-center justify-center hover:text-accent cursor-pointer"><Minus className="w-4 h-4" /></button>
+                    <span className="w-8 text-center text-sm font-semibold">{qty}</span>
+                    <button onClick={() => setQty(qty + 1)} className="w-12 h-12 flex items-center justify-center hover:text-accent cursor-pointer"><Plus className="w-4 h-4" /></button>
+                  </div>
+                  <div className="flex-1 flex gap-3">
+                    <button
+                      disabled={isOutOfStock}
+                      onClick={() => {
+                        if (isOutOfStock) return;
+                        add(product.slug, qty, selectedSize);
+                        trackPixelEvent("AddToCart", {
+                          content_name: product.name,
+                          content_ids: [product.slug],
+                          content_type: "product",
+                          value: getPriceForSize(product, selectedSize) * qty,
+                          currency: "INR",
+                          quantity: qty,
+                        });
+                        setToastMessage(`Added ${product.name} (${selectedSize}) x${qty} to cart!`);
+                        setTimeout(() => setToastMessage(null), 3500);
+                      }}
+                      className={`flex-1 border text-foreground rounded-full px-6 py-3.5 flex items-center justify-center gap-2 text-xs font-light tracking-[0.18em] uppercase transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer ${
+                        isOutOfStock 
+                          ? "bg-stone-100 text-stone-400 border-stone-200 cursor-not-allowed pointer-events-none hover:scale-100" 
+                          : "bg-white hover:bg-[#FAF9F5] border-border"
+                      }`}
+                    >
+                      <ShoppingBag className="w-4 h-4" /> {isOutOfStock ? "Out of Stock" : "Add to Cart"}
+                    </button>
+                    <button
+                      disabled={isOutOfStock}
+                      onClick={() => {
+                        if (isOutOfStock) return;
+                        add(product.slug, qty, selectedSize);
+                        trackPixelEvent("AddToCart", {
+                          content_name: product.name,
+                          content_ids: [product.slug],
+                          content_type: "product",
+                          value: getPriceForSize(product, selectedSize) * qty,
+                          currency: "INR",
+                          quantity: qty,
+                        });
+                        router.navigate({ to: "/cart" });
+                      }}
+                      className={`flex-1 rounded-full px-6 py-3.5 flex items-center justify-center gap-2 text-xs font-light tracking-[0.18em] uppercase transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer shadow-md ${
+                        isOutOfStock 
+                          ? "bg-stone-200 text-stone-400 cursor-not-allowed pointer-events-none hover:scale-100 shadow-none" 
+                          : "bg-[#1c1917] hover:bg-foreground/90 text-white shadow-stone-900/10"
+                      }`}
+                    >
+                      {isOutOfStock ? "Out of Stock" : "Buy Now"}
+                    </button>
+                  </div>
+                </div>
+              );
+            })()}
 
             {(() => {
               const threshold = 150;
