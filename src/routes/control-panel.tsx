@@ -460,7 +460,15 @@ Thank you for choosing Voguish Moments. We truly appreciate your support and hop
   const filteredOrders = orders.filter((o) => {
     const q = orderSearchQuery.toLowerCase().trim();
     if (!q) return true;
-    return o.id.toLowerCase().includes(q) || o.customerName.toLowerCase().includes(q) || o.customerEmail?.toLowerCase().includes(q);
+    const normalizedPhone = o.customerPhone ? o.customerPhone.replace(/\D/g, "") : "";
+    const normalizedQ = q.replace(/\D/g, "");
+    return (
+      o.id.toLowerCase().includes(q) || 
+      o.customerName.toLowerCase().includes(q) || 
+      o.customerEmail?.toLowerCase().includes(q) ||
+      o.customerPhone?.toLowerCase().includes(q) ||
+      (normalizedPhone && normalizedQ && normalizedPhone.includes(normalizedQ))
+    );
   });
 
   // Calculate order stats
@@ -589,7 +597,7 @@ Thank you for choosing Voguish Moments. We truly appreciate your support and hop
                       <input
                         value={orderSearchQuery}
                         onChange={(e) => setOrderSearchQuery(e.target.value)}
-                        placeholder="Search orders by name or ID..."
+                        placeholder="Search orders by name, phone, or ID..."
                         className="bg-transparent text-xs outline-none flex-1"
                       />
                     </div>
