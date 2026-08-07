@@ -50,7 +50,14 @@ export function ProductCard({ p }: { p: Product }) {
 
         {/* Price */}
         <div className="text-sm font-light text-[#1c1917] tracking-wider">
-          {p.priceLabel}
+          {(() => {
+            if (p.pricing && Object.keys(p.pricing).length > 0) {
+              const prices = Object.values(p.pricing);
+              const minPrice = Math.min(...prices);
+              return `₹${minPrice.toLocaleString("en-IN")}`;
+            }
+            return p.priceLabel;
+          })()}
         </div>
 
         {/* Star Rating */}

@@ -36,7 +36,18 @@ function ProductPage() {
   const { slug } = Route.useLoaderData();
   const [allProducts, setAllProducts] = useState<any[]>(PRODUCTS);
   const [qty, setQty] = useState(1);
-  const [selectedSize, setSelectedSize] = useState<string>("50 ml");
+
+  const getInitialSize = (prod: any) => {
+    if (!prod || !prod.pricing || Object.keys(prod.pricing).length === 0) {
+      return "50 ml";
+    }
+    const options = Object.keys(prod.pricing);
+    const inStock = options.find((opt) => !(prod.outOfStock && prod.outOfStock.includes(opt)));
+    return inStock || options[0];
+  };
+
+  const initialProduct = PRODUCTS.find((p) => p.slug === slug);
+  const [selectedSize, setSelectedSize] = useState<string>(() => getInitialSize(initialProduct));
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [activeMainImage, setActiveMainImage] = useState<string>("");
   const [isExpanded, setIsExpanded] = useState(false);
@@ -117,15 +128,10 @@ function ProductPage() {
       const options = product.pricing && Object.keys(product.pricing).length > 0
         ? Object.keys(product.pricing)
         : ["10 ml", "15 ml", "50 ml", "100 ml"];
-      if (!options.includes(selectedSize)) {
-        if (options.includes("50 ml")) {
-          setSelectedSize("50 ml");
-        } else {
-          setSelectedSize(options[0]);
-        }
-      }
+      const inStock = options.find((opt) => !(product.outOfStock && product.outOfStock.includes(opt)));
+      setSelectedSize(inStock || options[0]);
     }
-  }, [product, allProducts]);
+  }, [product]);
 
   const currentPrice = getPriceForSize(product, selectedSize);
   const allImages = product.base === "ROLL_ON_PREMIUM" && product.gallery && product.gallery.length > 0
