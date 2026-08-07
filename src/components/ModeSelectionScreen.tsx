@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { Link } from "@tanstack/react-router";
 import { useMode, FragranceMode } from "@/context/ModeContext";
 import logoImg from "@/assets/logo.png";
 import bgImage from "@/assets/divorce-hero.webp";
@@ -152,9 +153,12 @@ export function ModeSelectionScreen() {
         </button>
 
         {/* Small T&C link */}
-        <span className="text-[10px] tracking-widest text-stone-500 md:text-white/30 hover:text-stone-800 md:hover:text-white/50 font-medium uppercase mt-4 md:mt-6 transition-colors cursor-pointer">
+        <Link
+          to="/terms-and-conditions"
+          className="text-[10px] tracking-widest text-stone-500 md:text-white/30 hover:text-stone-800 md:hover:text-white/50 font-medium uppercase mt-4 md:mt-6 transition-colors cursor-pointer"
+        >
           Terms & Conditions
-        </span>
+        </Link>
       </div>
     </div>
   );
