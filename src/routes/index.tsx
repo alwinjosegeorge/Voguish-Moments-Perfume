@@ -332,19 +332,31 @@ function Home() {
       {/* Global Combined Showcase Link above Footer */}
       <section className="relative py-20 overflow-hidden text-center -mb-16">
         {/* Mobile Background Video (Air fryer recipes) */}
-        <iframe
-          src="https://player.cloudinary.com/embed/?cloud_name=dar4m0jyt&public_id=From_Klickpin.com-_Save_these_9_Unique_air_fryer_dinner_recipes_that_bring_together_comfort_beauty_and_useful_ideas_you_will_actually_try_for_anyo_1_ud9zpl&autoplay=true&loop=true&muted=true&controls=false&player[autoplay]=true&player[loop]=true&player[muted]=true&player[controls]=false"
-          className="absolute top-[-40px] left-1/2 -translate-x-1/2 w-full h-[calc(100%+80px)] z-0 pointer-events-none border-none scale-[2.6] origin-top block md:hidden"
-          allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
-          style={{ border: "none" }}
-        />
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full z-0 pointer-events-none object-cover block md:hidden"
+        >
+          <source
+            src="https://res.cloudinary.com/dar4m0jyt/video/upload/From_Klickpin.com-_Save_these_9_Unique_air_fryer_dinner_recipes_that_bring_together_comfort_beauty_and_useful_ideas_you_will_actually_try_for_anyo_1_ud9zpl.mp4"
+            type="video/mp4"
+          />
+        </video>
         {/* Desktop/Laptop Background Video (Untitled design (1) (1)) */}
-        <iframe
-          src="https://player.cloudinary.com/embed/?cloud_name=dar4m0jyt&public_id=Untitled_design_1_1_mxi7vn&autoplay=true&loop=true&muted=true&controls=false&player[autoplay]=true&player[loop]=true&player[muted]=true&player[controls]=false"
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full z-0 pointer-events-none border-none scale-[2.4] hidden md:block"
-          allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
-          style={{ border: "none" }}
-        />
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full z-0 pointer-events-none object-cover hidden md:block"
+        >
+          <source
+            src="https://res.cloudinary.com/dar4m0jyt/video/upload/Untitled_design_1_1_mxi7vn.mp4"
+            type="video/mp4"
+          />
+        </video>
         
         {/* Dark overlay for text contrast */}
         <div className="absolute inset-0 bg-black/45 z-10" />
