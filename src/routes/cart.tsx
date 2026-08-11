@@ -187,7 +187,7 @@ function CartPage() {
     }
 
     const orderId = `ERA-2026-${Math.floor(1000 + Math.random() * 9000)}`;
-    const razorpayKey: string = import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_live_T7xKZXNLWrVaj4"; // Loaded from Vercel env or fallback
+    const razorpayKey: string = import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_live_TOWariBI39bJOb"; // Loaded from Vercel env or fallback
 
     // If key is dummy or not set, directly place the order (simulate success)
     if (razorpayKey === "rzp_test_dummy_key") {
