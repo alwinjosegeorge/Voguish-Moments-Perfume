@@ -26,6 +26,8 @@ import seduction10mlImg from "@/assets/seduction-10ml.webp";
 import suicideKiss10mlImg from "@/assets/suicide-kiss-10ml.webp";
 import dopamine10mlImg from "@/assets/dopamine-10ml.webp";
 import moodSwings15mlImg from "@/assets/mood-swings-15ml.webp";
+import noGodImg from "@/assets/no-god.jpeg";
+import noGod15mlImg from "@/assets/no-god-15ml.jpeg";
 
 // Roll ON Premium Imports
 import dubaiNightsImg from "@/assets/dubai-nights.webp";
@@ -263,6 +265,19 @@ export const PRODUCTS: Product[] = [
     pricing: { "50 ml": 1300 },
     gallery: [provocativeWine1, provocativeWine2, provocativeWine3]
   },
+  {
+    slug: "no-god",
+    name: "No God",
+    category: "Melons & Cherry",
+    price: 2000,
+    priceLabel: "₹2,000",
+    img: noGodImg,
+    hr: "24 HR",
+    description: "ഈ ഒരു പെർഫ്യൂമിനെ കുറിച്ച് പറയുകയാണെങ്കിൽ നിന്റെ ഓഫീസിൽ നീ  കയറും മുമ്പ് നീ അവിടെ എത്തിയ വിവരം സ്വകാര്യ ചർച്ചാവിഷയമായി തീരുന്നു. ഉപയോഗിച്ചതിനു ശേഷം ഒറ്റയ്ക്കു യാത്ര ചെയ്യുന്നത് സൂക്ഷിച്ചു വേണം. ഇത് സ്ത്രീയോട് ആണ് ഞാൻ പറഞ്ഞത്. ഹേയ് പുരുഷ നിന്നോട് മിണ്ടാതെ നടക്കുന്ന സ്ത്രീക്ക് നിന്നോട് സംസാരിക്കണം എന്ന് ആഗ്രഹം തോന്നിപ്പിക്കുന്ന വിധം അവളെ മത്തു പിടിപ്പിക്കുന്നത്. നീ അവളെ കൊല്ലരുത്. ഒരു ദിവസം മുഴുവനും നീണ്ടുനിൽക്കുന്ന ലാസ്റ്റിംഗ്. നീ കയറിയ ഹൈപ്പർമാർക്കറ്റ് മുഴുവൻ പരക്കുംവിധം ഹൈപ്പർ പ്രൊജക്ഷൻ. നിനക്ക് ഇതു മതിയല്ലോ?",
+    base: "FRUITY_BASE",
+    pricing: { "15 ml": 600, "50 ml": 2000 },
+    gallery: [noGod15mlImg]
+  },
 
   // --- FRESH BASE ---
   {
@@ -423,6 +438,8 @@ export const PRODUCT_IMAGES: Record<string, string> = {
   "seduction-2": seduction2,
   "seduction-3": seduction3,
   "seduction-4": seduction4,
+  "no-god": noGodImg,
+  "no-god-15ml": noGod15mlImg,
 };
 
 export function getMergedProducts(): Product[] {
