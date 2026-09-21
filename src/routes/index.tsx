@@ -56,6 +56,13 @@ export interface HeroData {
 }
 
 export const DEFAULT_HERO_DATA: Record<string, HeroData> = {
+  ALL_FRAGRANCES: {
+    title: "OUR COMPLETE COLLECTION\nALL FRAGRANCES",
+    description:
+      "Explore the entire Voguish Moments universe. Discover all our exclusive parfums, rare ouds, florals, fruity blends, and premium signatures in one place.",
+    featuredSlug: "divorce-perfume",
+    img: divorceHero,
+  },
   OUD_BASE: {
     title: "OUR EXCLUSIVE PARFUM\nDIVORCE",
     description:
@@ -250,12 +257,14 @@ function Home() {
     };
   }, []);
 
-  const modePerfumes = allProducts.filter(
-    (p) => p.base === activeMode
-  );
+  const modePerfumes = activeMode === "ALL_FRAGRANCES"
+    ? allProducts
+    : allProducts.filter((p) => p.base === activeMode);
 
   const getModeHeading = (m: string) => {
     switch (m) {
+      case "ALL_FRAGRANCES":
+        return "All Perfumes & Fragrances";
       case "FLORAL_BASE":
         return "Another Floral Perfumes";
       case "FRUITY_BASE":

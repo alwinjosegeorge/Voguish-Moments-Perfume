@@ -30,6 +30,7 @@ export function ModeSelectionScreen() {
   };
 
   const OPTIONS = [
+    { id: "ALL_FRAGRANCES", label: "All Fragrances" },
     { id: "MESSI_EDITION", label: "Messi Edition" },
     { id: "ROLL_ON_PREMIUM", label: "Roll ON Premium" },
     { id: "OUD_BASE", label: "Oud Base" },
@@ -41,6 +42,8 @@ export function ModeSelectionScreen() {
 
   const getModeLabel = (m: FragranceMode | null) => {
     switch (m) {
+      case "ALL_FRAGRANCES":
+        return "All Fragrances";
       case "OUD_BASE":
         return "Oud Base";
       case "FLORAL_BASE":

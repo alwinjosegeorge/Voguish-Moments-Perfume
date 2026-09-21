@@ -38,6 +38,7 @@ export function Header() {
   }, []);
 
   const MODES = [
+    { id: "ALL_FRAGRANCES", label: "All Fragrances" },
     { id: "OUD_BASE", label: "Oud Base" },
     { id: "FLORAL_BASE", label: "Floral Base" },
     { id: "FRUITY_BASE", label: "Fruity Base" },
@@ -49,6 +50,8 @@ export function Header() {
 
   const getModeLabel = (m: FragranceMode | null) => {
     switch (m) {
+      case "ALL_FRAGRANCES":
+        return "All Fragrances";
       case "OUD_BASE":
         return "Oud Base";
       case "FLORAL_BASE":

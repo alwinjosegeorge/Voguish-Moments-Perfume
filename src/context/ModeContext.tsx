@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-export type FragranceMode = "OUD_BASE" | "FLORAL_BASE" | "FRUITY_BASE" | "FRESH_BASE" | "DIVORCE_LOTION" | "ROLL_ON_PREMIUM" | "MESSI_EDITION";
+export type FragranceMode = "ALL_FRAGRANCES" | "OUD_BASE" | "FLORAL_BASE" | "FRUITY_BASE" | "FRESH_BASE" | "DIVORCE_LOTION" | "ROLL_ON_PREMIUM" | "MESSI_EDITION";
 
 interface ModeContextType {
   mode: FragranceMode | null;

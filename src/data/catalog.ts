@@ -90,7 +90,7 @@ export type Product = {
   img: string;
   hr: string;
   description: string;
-  base?: "OUD_BASE" | "FLORAL_BASE" | "FRUITY_BASE" | "FRESH_BASE" | "ROLL_ON_PREMIUM" | "MESSI_EDITION" | "DIVORCE_LOTION";
+  base?: "ALL_FRAGRANCES" | "OUD_BASE" | "FLORAL_BASE" | "FRUITY_BASE" | "FRESH_BASE" | "ROLL_ON_PREMIUM" | "MESSI_EDITION" | "DIVORCE_LOTION";
   isCustom?: boolean;
   pricing?: Record<string, number>;
   badge?: "Bestseller" | "Only 2 Left" | "";
