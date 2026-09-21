@@ -31,12 +31,12 @@ export function ModeSelectionScreen() {
 
   const OPTIONS = [
     { id: "ALL_FRAGRANCES", label: "All Fragrances" },
-    { id: "MESSI_EDITION", label: "Messi Edition" },
-    { id: "ROLL_ON_PREMIUM", label: "Roll ON Premium" },
     { id: "OUD_BASE", label: "Oud Base" },
     { id: "FLORAL_BASE", label: "Floral Base" },
     { id: "FRUITY_BASE", label: "Fruity Base" },
+    { id: "MESSI_EDITION", label: "Leather Base" },
     { id: "FRESH_BASE", label: "Fresh Base" },
+    { id: "ROLL_ON_PREMIUM", label: "Roll ON Premium" },
     { id: "DIVORCE_LOTION", label: "Divorce Lotion" },
   ];
 
@@ -50,14 +50,14 @@ export function ModeSelectionScreen() {
         return "Floral Base";
       case "FRUITY_BASE":
         return "Fruity Base";
+      case "MESSI_EDITION":
+        return "Leather Base";
       case "FRESH_BASE":
         return "Fresh Base";
       case "DIVORCE_LOTION":
         return "Divorce Lotion";
       case "ROLL_ON_PREMIUM":
         return "Roll ON Premium";
-      case "MESSI_EDITION":
-        return "Messi Edition";
       default:
         return "Choose your fragrance base";
     }

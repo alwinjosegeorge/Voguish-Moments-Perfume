@@ -56,8 +56,7 @@ import evesTemptation3 from "@/assets/eves-temptation-3.webp";
 import evesTemptation4 from "@/assets/eves-temptation-4.webp";
 import evesTemptation5 from "@/assets/eves-temptation-5.webp";
 
-// Messi Edition Imports
-import messiHeroImg from "@/assets/messi-hero.webp";
+// Messi / Leather Edition Imports
 import messiProductImg from "@/assets/messi-product.jpg";
 import messiGalleryImg from "@/assets/messi-gallery.jpg";
 import evesTemptation5b from "@/assets/eves-temptation-5b.webp";
@@ -372,7 +371,7 @@ export const PRODUCTS: Product[] = [
     description: "ഈ പെർഫ്യൂമിനെ കുറിച്ച് പറയുകയാണെങ്കിൽ മെസ്സിയുടെ സ്വന്തം ബ്രാൻഡിൽ നിന്നും ഇറക്കിയ ഒരു ഡ്യൂപ്പ് അല്ല അതിൽ ഒന്നും അധികനേരം നിലനിൽക്കുന്ന പെർഫ്യൂമുകൾ ലഭ്യമല്ല കൂടാതെ അത് മാർക്കറ്റിൽ ലഭ്യമാണ്. ഞങ്ങളുടെ ഫോക്കസിംഗ് അദ്ദേഹത്തിന്റെ പേഴ്സണൽ കളക്ഷനിൽ നിന്നും ഒരെണ്ണം ആയിരുന്നു. വളരെ കഠിന്യമേറിയ ജോലി തന്നെയാണ് ഇത്. അദ്ദേഹത്തിന് ലതറി നോട്ട് നോട് ഇഷ്ടം കൂടുതലാണ്. ഞങ്ങൾ ഒരുപാട് കടപ്പെട്ടത്  Fueguia 1833 Perfume House Argentina. ഒരു ശരിയായ വിഷൻ അവരിൽ നിന്നും നമുക്ക് ലഭിച്ചു. അർജന്റീന കൂട്ടുകാരോട് നന്ദി. ഒരു പുരുഷന് വേണ്ട സുഗന്ധം വളരെ മസ്കുലിൻ നനഞ്ഞ ലതറിന്റെ മത്തുപിടിപ്പിക്കും വിധം സുഗന്ധത്താൽ പൊതിഞ്ഞത്. നീണ്ട നേരം നിലനിൽക്കുന്നത്. ഒരു മരണവീട്ടിൽ അറിയാതെ പോലും ഉപയോഗിച്ചു അടിച്ചു ഉപയോഗിച്ചു പോകാൻ കഴിയാത്തതു. ചുറ്റുപാട് നിൽക്കുന്നവർക്ക് വളരെ ആകാംക്ഷയേറിയതും കാഠിന്യത്താൽ ഗുണമേന്മയേറിയതും അവസാനം ലഭിച്ചു.",
     base: "MESSI_EDITION",
     pricing: { "10 ml": 400, "50 ml": 2000 },
-    gallery: [messiGalleryImg, messiHeroImg]
+    gallery: [messiGalleryImg]
   },
   {
     slug: "divorce-lotion",
@@ -475,7 +474,7 @@ export function getMergedProducts(): Product[] {
   }
 }
 
-export const CATEGORIES = ["All", "Oud Base", "Floral Base", "Fruity Base", "Fresh Base", "Roll On", "Messi Edition", "Divorce Lotion"] as const;
+export const CATEGORIES = ["All", "Oud Base", "Floral Base", "Fruity Base", "Leather Base", "Fresh Base", "Roll On", "Divorce Lotion"] as const;
 
 
 export type Article = {

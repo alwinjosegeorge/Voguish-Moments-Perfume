@@ -14,7 +14,7 @@ import seductionHeroImg from "@/assets/seduction-1.webp";
 import dopamineHeroImg from "@/assets/dopamine-1.webp";
 import oilsPageHeader from "@/assets/oils-page-header.webp";
 import oilsPageHeaderMobile from "@/assets/oils-page-header-mobile.webp";
-import messiHeroImg from "@/assets/messi-hero.webp";
+import messiProductImg from "@/assets/messi-product.jpg";
 import oilsPageHeaderLap from "@/assets/oils-page-header-lap.webp";
 import divorceLotionHero from "@/assets/divorce-lotion-hero.webp";
 import oilsPageHeaderImage from "@/assets/oils-page-header-image.webp";
@@ -96,7 +96,7 @@ export const DEFAULT_HERO_DATA: Record<string, HeroData> = {
     description:
       "ഈ പെർഫ്യൂമിനെ കുറിച്ച് പറയുകയാണെങ്കിൽ മെസ്സിയുടെ സ്വന്തം ബ്രാൻഡിൽ നിന്നും ഇറക്കിയ ഒരു ഡ്യൂപ്പ് അല്ല അതിൽ ഒന്നും അധികനേരം നിലനിൽക്കുന്ന പെർഫ്യൂമുകൾ ലഭ്യമല്ല കൂടാതെ അത് മാർക്കറ്റിൽ ലഭ്യമാണ്. ഞങ്ങളുടെ ഫോക്കസിംഗ് അദ്ദേഹത്തിന്റെ പേഴ്സണൽ കളക്ഷനിൽ നിന്നും ഒരെണ്ണം ആയിരുന്നു. വളരെ കഠിന്യമേറിയ ജോലി തന്നെയാണ് ഇത്. അദ്ദേഹത്തിന് ലതറി നോട്ട് നോട് ഇഷ്ടം കൂടുതലാണ്. ഞങ്ങൾ ഒരുപാട് കടപ്പെട്ടത്  Fueguia 1833 Perfume House Argentina. ഒരു ശരിയായ വിഷൻ അവരിൽ നിന്നും നമുക്ക് ലഭിച്ചു. അർജന്റീന കൂട്ടുകാരോട് നന്ദി. ഒരു പുരുഷന് വേണ്ട സുഗന്ധം വളരെ മസ്കുലിൻ നനഞ്ഞ ലതറിന്റെ മത്തുപിടിപ്പിക്കും വിധം സുഗന്ധത്താൽ പൊതിഞ്ഞത്. നീണ്ട നേരം നിലനിൽക്കുന്നത്. ഒരു മരണവീട്ടിൽ അറിയാതെ പോലും ഉപയോഗിച്ചു അടിച്ചു ഉപയോഗിച്ചു പോകാൻ കഴിയാത്തതു. ചുറ്റുപാട് നിൽക്കുന്നവർക്ക് വളരെ ആകാംക്ഷയേറിയതും കാഠിന്യത്താൽ ഗുണമേന്മയേറിയതും അവസാനം ലഭിച്ചു.",
     featuredSlug: "lionel-leather",
-    img: messiHeroImg,
+    img: messiProductImg,
   },
   DIVORCE_LOTION: {
     title: "OUR EXCLUSIVE LOTION\nDIVORCE LOTION",
@@ -128,7 +128,7 @@ function Hero({ allProducts }: { allProducts: any[] }) {
     } else if (resolvedSlug === "dopamine") {
       resolvedImg = dopamineHeroImg;
     } else if (resolvedSlug === "lionel-leather") {
-      resolvedImg = messiHeroImg;
+      resolvedImg = messiProductImg;
     } else if (resolvedSlug === "divorce-lotion") {
       resolvedImg = divorceLotionHero;
     } else {
@@ -222,7 +222,7 @@ function Hero({ allProducts }: { allProducts: any[] }) {
             to="/product/$slug"
             params={{ slug: data.featuredSlug }}
             className={`relative mx-auto w-full max-w-[450px] block cursor-pointer group/heroimg ${
-              mode === "MESSI_EDITION" || mode === "DIVORCE_LOTION" ? "aspect-[118/160]" : "aspect-square"
+              mode === "DIVORCE_LOTION" ? "aspect-[118/160]" : "aspect-square"
             }`}
           >
             <div className="absolute inset-0 overflow-hidden bg-cream group-hover/heroimg:scale-[1.01] transition-transform duration-500 rounded-none border border-border/80">

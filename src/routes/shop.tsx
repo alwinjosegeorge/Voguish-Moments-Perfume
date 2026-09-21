@@ -45,7 +45,7 @@ function Shop() {
         if (active === "Fruity Base" && p.base === "FRUITY_BASE") return true;
         if (active === "Fresh Base" && p.base === "FRESH_BASE") return true;
         if (active === "Roll On" && p.base === "ROLL_ON_PREMIUM") return true;
-        if (active === "Messi Edition" && p.base === "MESSI_EDITION") return true;
+        if ((active === "Leather Base" || active === "Messi Edition") && p.base === "MESSI_EDITION") return true;
         if (active === "Divorce Lotion" && p.base === "DIVORCE_LOTION") return true;
         return false;
       });
