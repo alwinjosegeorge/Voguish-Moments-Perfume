@@ -242,8 +242,13 @@ function ProductPage() {
           </div>
 
           <div className="flex flex-col justify-start">
-            <div className="text-sm text-muted-foreground flex items-center gap-2">
+            <div className="text-sm text-muted-foreground flex items-center gap-2.5 flex-wrap">
               <span>{product.category}</span>
+              {product.badge && (
+                <span className="bg-[#1c1917] text-white text-[10px] font-bold tracking-widest px-2.5 py-1 uppercase shadow-xs">
+                  {product.badge}
+                </span>
+              )}
             </div>
             <h1 className="mt-2 font-display text-4xl md:text-5xl font-light">{product.name}</h1>
             <div className="mt-4 font-display text-2xl md:text-3xl font-light text-foreground">

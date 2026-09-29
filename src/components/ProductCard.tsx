@@ -26,6 +26,13 @@ export function ProductCard({ p }: { p: Product }) {
           </span>
         )}
 
+        {/* Top Right Badge */}
+        {p.badge && (
+          <span className="absolute top-3 right-3 z-10 bg-[#1c1917] text-white text-[9px] font-bold tracking-widest px-2.5 py-1 rounded-none shadow-xs uppercase">
+            {p.badge}
+          </span>
+        )}
+
         {/* Product Image */}
         <img
           src={isHovered && p.hoverImg ? p.hoverImg : p.img}
@@ -44,8 +51,13 @@ export function ProductCard({ p }: { p: Product }) {
         </h3>
 
         {/* Subtitle / Category */}
-        <p className="text-[11px] text-muted-foreground tracking-wide font-light">
-          {p.category}
+        <p className="text-[11px] text-muted-foreground tracking-wide font-light flex items-center justify-center gap-1.5">
+          <span>{p.category}</span>
+          {p.badge && (
+            <span className="text-[#1c1917] font-medium tracking-wider">
+              • {p.badge}
+            </span>
+          )}
         </p>
 
         {/* Price */}
