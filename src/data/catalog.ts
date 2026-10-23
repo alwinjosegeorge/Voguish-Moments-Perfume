@@ -28,6 +28,8 @@ import dopamine10mlImg from "@/assets/dopamine-10ml.webp";
 import moodSwings15mlImg from "@/assets/mood-swings-15ml.webp";
 import noGodImg from "@/assets/no-god.jpeg";
 import noGod15mlImg from "@/assets/no-god-15ml.jpeg";
+import boysTearsImg from "@/assets/boys-tears.png";
+import boysTears15mlImg from "@/assets/boys-tears-15ml.png";
 
 // Roll ON Premium Imports
 import dubaiNightsImg from "@/assets/dubai-nights.webp";
@@ -237,6 +239,19 @@ export const PRODUCTS: Product[] = [
     pricing: { "50 ml": 1300 },
     gallery: [evesTemptation1, evesTemptation2, evesTemptation3, evesTemptation4, evesTemptation5, evesTemptation5b, evesTemptation6, evesTemptation7]
   },
+  {
+    slug: "boys-tears",
+    name: "Boy's Tears",
+    category: "Lavender & Oman Frankincense",
+    price: 2000,
+    priceLabel: "₹2,000",
+    img: boysTearsImg,
+    hr: "12 HR",
+    description: "ഈ പെർഫ്യൂംനെ കുറച്ചു പറയുക ആണേൽ. ലവേണ്ടറിൽ പ്രണയവും, ഒമാനി കുന്തിരികവും ചേർന്ന് ഒരു തരം വിഷമവും എന്നാലോ പ്രണയവും. ഒരു ട്രോമാ സിറ്റുവേഷൻ എന്നേക്കും ഓർക്കാൻ കഴിയും വിഷം പോലെ ഉള്ളിൽ താങ്ങി നില്കാൻ ശക്തമായ ഒന്ന്.  ചതിക്കപെട്ടവന്റെ ദയനിയഥ നിറഞ്ഞ ഒന്ന്. മനസ് കിഴടക്കും ഉറപ്പ്",
+    base: "FLORAL_BASE",
+    pricing: { "15 ml": 610, "50 ml": 2000 },
+    gallery: [boysTears15mlImg]
+  },
 
   // --- FRUITY BASE ---
   {
@@ -441,6 +456,8 @@ export const PRODUCT_IMAGES: Record<string, string> = {
   "seduction-4": seduction4,
   "no-god": noGodImg,
   "no-god-15ml": noGod15mlImg,
+  "boys-tears": boysTearsImg,
+  "boys-tears-15ml": boysTears15mlImg,
 };
 
 export function getMergedProducts(): Product[] {
