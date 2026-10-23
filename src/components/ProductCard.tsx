@@ -10,6 +10,9 @@ export function ProductCard({ p }: { p: Product }) {
   const rating = ((p.slug.charCodeAt(0) % 5) * 0.1 + 4.5).toFixed(2);
   const reviewsCount = (p.slug.charCodeAt(1) % 80) + 20;
 
+  const allSizes = p.pricing ? Object.keys(p.pricing) : [];
+  const isEntirelyOutOfStock = allSizes.length > 0 && allSizes.every((s) => p.outOfStock?.includes(s));
+
   return (
     <Link
       to="/product/$slug"
@@ -27,11 +30,15 @@ export function ProductCard({ p }: { p: Product }) {
         )}
 
         {/* Top Right Badge */}
-        {p.badge && (
+        {isEntirelyOutOfStock ? (
+          <span className="absolute top-3 right-3 z-10 bg-red-600/90 text-white text-[9px] font-bold tracking-widest px-2.5 py-1 rounded-none shadow-xs uppercase">
+            Out of Stock
+          </span>
+        ) : p.badge ? (
           <span className="absolute top-3 right-3 z-10 bg-[#1c1917] text-white text-[9px] font-bold tracking-widest px-2.5 py-1 rounded-none shadow-xs uppercase">
             {p.badge}
           </span>
-        )}
+        ) : null}
 
         {/* Product Image */}
         <img
@@ -79,12 +86,16 @@ export function ProductCard({ p }: { p: Product }) {
           <span>({reviewsCount})</span>
         </div>
 
-        {/* Add to Cart Button */}
-        <div
-          className="w-full mt-2 py-3 rounded-none text-[10px] font-light tracking-[0.18em] uppercase flex items-center justify-center gap-1.5 border border-[#1c1917] bg-[#1c1917] text-white hover:bg-white hover:text-[#1c1917] transition-all duration-300 active:scale-[0.98] cursor-pointer shadow-sm"
-        >
-          <ShoppingBag className="w-3.5 h-3.5" /> Add to Cart
-        </div>
+        {/* Add to Cart Button / Out of Stock Indicator */}
+        {isEntirelyOutOfStock ? (
+          <div className="w-full mt-2 py-3 rounded-none text-[10px] font-light tracking-[0.18em] uppercase flex items-center justify-center gap-1.5 border border-stone-200 bg-stone-100 text-stone-400">
+            Out of Stock
+          </div>
+        ) : (
+          <div className="w-full mt-2 py-3 rounded-none text-[10px] font-light tracking-[0.18em] uppercase flex items-center justify-center gap-1.5 border border-[#1c1917] bg-[#1c1917] text-white hover:bg-white hover:text-[#1c1917] transition-all duration-300 active:scale-[0.98] cursor-pointer shadow-sm">
+            <ShoppingBag className="w-3.5 h-3.5" /> Add to Cart
+          </div>
+        )}
       </div>
     </Link>
   );
