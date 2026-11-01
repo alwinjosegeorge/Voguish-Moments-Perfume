@@ -30,6 +30,8 @@ import noGodImg from "@/assets/no-god.jpeg";
 import noGod15mlImg from "@/assets/no-god-15ml.jpeg";
 import boysTearsImg from "@/assets/boys-tears.png";
 import boysTears15mlImg from "@/assets/boys-tears-15ml.png";
+import poisonedPleasureImg from "@/assets/poisoned-pleasure.png";
+import poisonedPleasure15mlImg from "@/assets/poisoned-pleasure-15ml.png";
 
 // Roll ON Premium Imports
 import dubaiNightsImg from "@/assets/dubai-nights.webp";
@@ -91,7 +93,7 @@ export type Product = {
   img: string;
   hr: string;
   description: string;
-  base?: "ALL_FRAGRANCES" | "OUD_BASE" | "FLORAL_BASE" | "FRUITY_BASE" | "FRESH_BASE" | "ROLL_ON_PREMIUM" | "MESSI_EDITION" | "DIVORCE_LOTION";
+  base?: "ALL_FRAGRANCES" | "OUD_BASE" | "FLORAL_BASE" | "FRUITY_BASE" | "SPICY_BASE" | "FRESH_BASE" | "ROLL_ON_PREMIUM" | "MESSI_EDITION" | "DIVORCE_LOTION";
   isCustom?: boolean;
   pricing?: Record<string, number>;
   badge?: "Limited Edition" | "Bestseller" | "Only 2 Left" | "" | string;
@@ -295,6 +297,21 @@ export const PRODUCTS: Product[] = [
     gallery: [noGod15mlImg]
   },
 
+  // --- SPICY BASE ---
+  {
+    slug: "poisoned-pleasure",
+    name: "POISONED PLEASURE",
+    category: "Platinum & Spicy Aromatic",
+    price: 2000,
+    priceLabel: "₹2,000",
+    img: poisonedPleasureImg,
+    hr: "12 HR",
+    description: "ഈ പെർഫ്യൂം നെ കുറിച്ച് പറയുകയാണെങ്കിൽ. ഒരു ഫ്രഞ്ച് പൈദൃഗം വിളിച്ചു ഊദുന്ന വിധം നിങ്ങളെ ഒരു യൂറോപ്യൻ യുവാവ് ആകുന്ന ഒന്ന്. മാർക്കറ്റിൽ ഇങ്ങനെ ഒന്ന് കിട്ടൽ എളുപ്പമല്ല. അടുത്ത് നില്കുന്നവർക്ക് ചോദിച്ചു അറിയാൻ അധിയായ ആഗ്രഹം ഉണ്ടാവും പക്ഷെ അത് വാങ്ങിക്കാൻ ഉള്ള പൈസ അവർ മനസ്സിൽ കണക്കുകൂട്ടും. ചോദിക്കാതെ ഇരിക്കുന്നത് ആണ് ബുദ്ധി എന്ന് അവർ ചിന്തിക്കും വിധം വില കല്പിക്കുന്ന വിഷം ആണ് ഈ പെർഫ്യൂം",
+    base: "SPICY_BASE",
+    pricing: { "15 ml": 600, "50 ml": 2000 },
+    gallery: [poisonedPleasure15mlImg]
+  },
+
   // --- FRESH BASE ---
   {
     slug: "dopamine",
@@ -459,6 +476,8 @@ export const PRODUCT_IMAGES: Record<string, string> = {
   "no-god-15ml": noGod15mlImg,
   "boys-tears": boysTearsImg,
   "boys-tears-15ml": boysTears15mlImg,
+  "poisoned-pleasure": poisonedPleasureImg,
+  "poisoned-pleasure-15ml": poisonedPleasure15mlImg,
 };
 
 export function getMergedProducts(): Product[] {
@@ -493,7 +512,7 @@ export function getMergedProducts(): Product[] {
   }
 }
 
-export const CATEGORIES = ["All", "Oud Base", "Floral Base", "Fruity Base", "Leather Base", "Fresh Base", "Roll On", "Divorce Lotion"] as const;
+export const CATEGORIES = ["All", "Oud Base", "Floral Base", "Fruity Base", "Spicy Base", "Leather Base", "Fresh Base", "Roll On", "Divorce Lotion"] as const;
 
 
 export type Article = {

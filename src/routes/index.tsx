@@ -91,6 +91,13 @@ export const DEFAULT_HERO_DATA: Record<string, HeroData> = {
     featuredSlug: "dopamine",
     img: "",
   },
+  SPICY_BASE: {
+    title: "OUR EXCLUSIVE PARFUM\nPOISONED PLEASURE",
+    description:
+      "ഈ പെർഫ്യൂം നെ കുറിച്ച് പറയുകയാണെങ്കിൽ. ഒരു ഫ്രഞ്ച് പൈദൃഗം വിളിച്ചു ഊദുന്ന വിധം നിങ്ങളെ ഒരു യൂറോപ്യൻ യുവാവ് ആകുന്ന ഒന്ന്. മാർക്കറ്റിൽ ഇങ്ങനെ ഒന്ന് കിട്ടൽ എളുപ്പമല്ല. അടുത്ത് നില്കുന്നവർക്ക് ചോദിച്ചു അറിയാൻ അധിയായ ആഗ്രഹം ഉണ്ടാവും പക്ഷെ അത് വാങ്ങിക്കാൻ ഉള്ള പൈസ അവർ മനസ്സിൽ കണക്കുകൂട്ടും. ചോദിക്കാതെ ഇരിക്കുന്നത് ആണ് ബുദ്ധി എന്ന് അവർ ചിന്തിക്കും വിധം വില കല്പിക്കുന്ന വിഷം ആണ് ഈ പെർഫ്യൂം",
+    featuredSlug: "poisoned-pleasure",
+    img: "",
+  },
   MESSI_EDITION: {
     title: "NEW LAUNCH\nLIONEL LEATHER",
     description:
@@ -175,7 +182,7 @@ function Hero({ allProducts }: { allProducts: any[] }) {
           <h1 className="font-display">
             {renderTitle(data.title)}
           </h1>
-          {mode === "MESSI_EDITION" || mode === "DIVORCE_LOTION" ? (
+          {mode === "MESSI_EDITION" || mode === "DIVORCE_LOTION" || mode === "SPICY_BASE" ? (
             <p className="mt-8 text-muted-foreground text-sm lg:text-base max-w-lg mx-auto lg:mx-0 leading-relaxed whitespace-pre-line text-left">
               {isDescExpanded
                 ? data.description
@@ -271,6 +278,8 @@ function Home() {
         return "Another Fruity Perfumes";
       case "FRESH_BASE":
         return "Another Fresh Perfumes";
+      case "SPICY_BASE":
+        return "Another Spicy Perfumes";
       default:
         return "Another Oud Perfumes";
     }

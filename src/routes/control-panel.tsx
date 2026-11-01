@@ -21,7 +21,7 @@ export const Route = createFileRoute("/control-panel")({
   component: ControlPanel,
 });
 
-type FragranceMode = "OUD_BASE" | "FLORAL_BASE" | "FRUITY_BASE" | "FRESH_BASE";
+type FragranceMode = "OUD_BASE" | "FLORAL_BASE" | "FRUITY_BASE" | "FRESH_BASE" | "SPICY_BASE";
 type TabName = "orders" | "products";
 
 function getStandardPriceForSize(basePrice: number, size: string): number {
@@ -69,7 +69,7 @@ ${order.deliveryAddress.district}, ${order.deliveryAddress.state} - ${order.deli
 
   // Product form states
   const [prodName, setProdName] = useState("");
-  const [prodBase, setProdBase] = useState<"Oud Base" | "Floral Base" | "Fruity Base" | "Fresh Base">("Oud Base");
+  const [prodBase, setProdBase] = useState<"Oud Base" | "Floral Base" | "Fruity Base" | "Fresh Base" | "Spicy Base">("Oud Base");
   const [prodPrice, setProdPrice] = useState<number>(1999);
   const [prodDesc, setProdDesc] = useState("");
   
@@ -346,6 +346,7 @@ Thank you for choosing Voguish Moments. We truly appreciate your support and hop
     if (prodBase === "Floral Base") baseEnum = "FLORAL_BASE";
     if (prodBase === "Fruity Base") baseEnum = "FRUITY_BASE";
     if (prodBase === "Fresh Base") baseEnum = "FRESH_BASE";
+    if (prodBase === "Spicy Base") baseEnum = "SPICY_BASE";
 
     const pricing: Record<string, number> = {};
     activeSizes.forEach((size) => {
@@ -923,6 +924,7 @@ Thank you for choosing Voguish Moments. We truly appreciate your support and hop
                           <option value="Oud Base">Oud Base</option>
                           <option value="Floral Base">Floral Base</option>
                           <option value="Fruity Base">Fruity Base</option>
+                          <option value="Spicy Base">Spicy Base</option>
                           <option value="Fresh Base">Fresh Base</option>
                         </select>
                       </div>

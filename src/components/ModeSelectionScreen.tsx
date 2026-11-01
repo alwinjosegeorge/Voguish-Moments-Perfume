@@ -34,6 +34,7 @@ export function ModeSelectionScreen() {
     { id: "OUD_BASE", label: "Oud Base" },
     { id: "FLORAL_BASE", label: "Floral Base" },
     { id: "FRUITY_BASE", label: "Fruity Base" },
+    { id: "SPICY_BASE", label: "Spicy Base" },
     { id: "MESSI_EDITION", label: "Leather Base" },
     { id: "FRESH_BASE", label: "Fresh Base" },
     { id: "ROLL_ON_PREMIUM", label: "Roll ON Premium" },
@@ -50,6 +51,8 @@ export function ModeSelectionScreen() {
         return "Floral Base";
       case "FRUITY_BASE":
         return "Fruity Base";
+      case "SPICY_BASE":
+        return "Spicy Base";
       case "MESSI_EDITION":
         return "Leather Base";
       case "FRESH_BASE":
