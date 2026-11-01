@@ -88,6 +88,10 @@ ${order.deliveryAddress.district}, ${order.deliveryAddress.state} - ${order.deli
   const [prodBadge, setProdBadge] = useState<"No Badge" | "Bestseller" | "Only 2 Left">("No Badge");
   const [activeSizes, setActiveSizes] = useState<string[]>(["10 ml", "15 ml", "50 ml", "100 ml"]);
 
+  // Leaderboard states
+  const [leaderboardSearch, setLeaderboardSearch] = useState("");
+  const [leaderboardSort, setLeaderboardSort] = useState<"orders" | "units" | "revenue">("orders");
+
   // Media handlers
   const handleMainImgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -412,79 +416,35 @@ Thank you for choosing Voguish Moments. We truly appreciate your support and hop
       });
   };
 
-  // Lock screen view
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center py-20 px-6 bg-[#FAF9F5] text-foreground">
-        <div className="w-full max-w-md bg-white border border-[#EAE8E2] rounded-3xl p-8 shadow-sm text-center animate-fade-up">
-          <div className="w-12 h-12 rounded-full bg-[#1c1917]/5 border border-[#1c1917]/20 flex items-center justify-center mx-auto mb-6 text-[#1c1917]">
-            <Lock className="w-5 h-5" />
-          </div>
-          <h1 className="font-display text-3xl mb-1 text-foreground">Management Console</h1>
-          <p className="text-xs text-muted-foreground tracking-widest uppercase mb-8">Access Locked</p>
-          
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label className="block text-[10px] tracking-wider text-muted-foreground font-bold uppercase mb-2">
-                Enter Console Passcode
-              </label>
-              <input
-                type="password"
-                required
-                autoFocus
-                value={passcode}
-                onChange={(e) => setPasscode(e.target.value)}
-                placeholder="••••"
-                className="w-full bg-[#FAF9F5] border border-border rounded-xl px-4 py-3.5 text-center text-lg font-bold tracking-widest outline-none focus:ring-1 focus:ring-accent"
-              />
-            </div>
-            
-            {authError && (
-              <p className="text-xs font-semibold text-red-600 animate-pulse">
-                Incorrect passcode. Please try again.
-              </p>
-            )}
-
-            <button
-              type="submit"
-              className="w-full bg-[#1c1917] hover:bg-foreground/90 text-white rounded-full py-3.5 text-xs font-bold tracking-widest uppercase transition-all shadow-md shadow-stone-900/10 cursor-pointer"
-            >
-              Access Dashboard
-            </button>
-          </form>
-        </div>
-      </div>
-    );
-  }
-
   // Filter orders
-  const filteredOrders = orders.filter((o) => {
-    const q = orderSearchQuery.toLowerCase().trim();
-    if (!q) return true;
-    const normalizedPhone = o.customerPhone ? o.customerPhone.replace(/\D/g, "") : "";
-    const normalizedQ = q.replace(/\D/g, "");
-    return (
-      o.id.toLowerCase().includes(q) || 
-      o.customerName.toLowerCase().includes(q) || 
-      o.customerEmail?.toLowerCase().includes(q) ||
-      o.customerPhone?.toLowerCase().includes(q) ||
-      (normalizedPhone && normalizedQ && normalizedPhone.includes(normalizedQ))
-    );
-  });
+  const filteredOrders = useMemo(() => {
+    return orders.filter((o) => {
+      const q = orderSearchQuery.toLowerCase().trim();
+      if (!q) return true;
+      const normalizedPhone = o.customerPhone ? String(o.customerPhone).replace(/\D/g, "") : "";
+      const normalizedQ = q.replace(/\D/g, "");
+      return (
+        (o.id && String(o.id).toLowerCase().includes(q)) || 
+        (o.customerName && String(o.customerName).toLowerCase().includes(q)) || 
+        (o.customerEmail && String(o.customerEmail).toLowerCase().includes(q)) ||
+        (o.customerPhone && String(o.customerPhone).toLowerCase().includes(q)) ||
+        (normalizedPhone && normalizedQ && normalizedPhone.includes(normalizedQ))
+      );
+    });
+  }, [orders, orderSearchQuery]);
 
   // Calculate order stats
-  const stats = {
-    total: orders.length,
-    waiting: orders.filter((o) => o.status === "WAITING").length,
-    shipped: orders.filter((o) => o.status === "SHIPPED").length,
-    delivered: orders.filter((o) => o.status === "DELIVERED").length,
-    revenue: orders.reduce((sum, o) => sum + (o.total || 0), 0),
-  };
+  const stats = useMemo(() => {
+    return {
+      total: orders.length,
+      waiting: orders.filter((o) => o.status === "WAITING").length,
+      shipped: orders.filter((o) => o.status === "SHIPPED").length,
+      delivered: orders.filter((o) => o.status === "DELIVERED").length,
+      revenue: orders.reduce((sum, o) => sum + (Number(o.total) || 0), 0),
+    };
+  }, [orders]);
 
-  // Leaderboard states & analytics
-  const [leaderboardSearch, setLeaderboardSearch] = useState("");
-  const [leaderboardSort, setLeaderboardSort] = useState<"orders" | "units" | "revenue">("orders");
-
+  // Leaderboard analytics
   const perfumeStats = useMemo(() => {
     const map: Record<string, {
       slug: string;
@@ -515,14 +475,22 @@ Thank you for choosing Voguish Moments. We truly appreciate your support and hop
     });
 
     orders.forEach((order) => {
-      if (!order.items || !Array.isArray(order.items)) return;
+      let rawItems = order.items;
+      if (typeof rawItems === "string") {
+        try {
+          rawItems = JSON.parse(rawItems);
+        } catch {
+          rawItems = [];
+        }
+      }
+      if (!rawItems || !Array.isArray(rawItems)) return;
       const seenInThisOrder = new Set<string>();
 
-      order.items.forEach((item: any) => {
+      rawItems.forEach((item: any) => {
         let key = item.slug;
         if (!key || !map[key]) {
           const found = products.find(
-            (p) => p.name.toLowerCase().trim() === (item.name || "").toLowerCase().trim()
+            (p) => p.name?.toLowerCase().trim() === (item.name || "").toLowerCase().trim()
           );
           if (found) key = found.slug;
         }
@@ -572,7 +540,7 @@ Thank you for choosing Voguish Moments. We truly appreciate your support and hop
     if (leaderboardSearch.trim()) {
       const q = leaderboardSearch.toLowerCase().trim();
       list = list.filter(
-        (p) => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q)
+        (p) => p.name?.toLowerCase().includes(q) || p.category?.toLowerCase().includes(q)
       );
     }
 
@@ -590,6 +558,51 @@ Thank you for choosing Voguish Moments. We truly appreciate your support and hop
 
     return list;
   }, [perfumeStats, leaderboardSearch, leaderboardSort]);
+
+  // Lock screen view
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center py-20 px-6 bg-[#FAF9F5] text-foreground">
+        <div className="w-full max-w-md bg-white border border-[#EAE8E2] rounded-3xl p-8 shadow-sm text-center animate-fade-up">
+          <div className="w-12 h-12 rounded-full bg-[#1c1917]/5 border border-[#1c1917]/20 flex items-center justify-center mx-auto mb-6 text-[#1c1917]">
+            <Lock className="w-5 h-5" />
+          </div>
+          <h1 className="font-display text-3xl mb-1 text-foreground">Management Console</h1>
+          <p className="text-xs text-muted-foreground tracking-widest uppercase mb-8">Access Locked</p>
+          
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <label className="block text-[10px] tracking-wider text-muted-foreground font-bold uppercase mb-2">
+                Enter Console Passcode
+              </label>
+              <input
+                type="password"
+                required
+                autoFocus
+                value={passcode}
+                onChange={(e) => setPasscode(e.target.value)}
+                placeholder="••••"
+                className="w-full bg-[#FAF9F5] border border-border rounded-xl px-4 py-3.5 text-center text-lg font-bold tracking-widest outline-none focus:ring-1 focus:ring-accent"
+              />
+            </div>
+            
+            {authError && (
+              <p className="text-xs font-semibold text-red-600 animate-pulse">
+                Incorrect passcode. Please try again.
+              </p>
+            )}
+
+            <button
+              type="submit"
+              className="w-full bg-[#1c1917] hover:bg-foreground/90 text-white rounded-full py-3.5 text-xs font-bold tracking-widest uppercase transition-all shadow-md shadow-stone-900/10 cursor-pointer"
+            >
+              Access Dashboard
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">

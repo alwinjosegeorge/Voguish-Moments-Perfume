@@ -14,6 +14,15 @@ import { initMetaPixel } from "../lib/metaPixel";
 import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const p = window.location.pathname.toLowerCase().replace(/\/+$/, "");
+      if (p === "/control-panel") {
+        window.location.replace("/control-panel");
+      }
+    }
+  }, []);
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
