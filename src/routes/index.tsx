@@ -279,7 +279,7 @@ function Home() {
       case "FRESH_BASE":
         return "Another Fresh Perfumes";
       case "SPICY_BASE":
-        return "Another Spicy Perfumes";
+        return "Another Spicy Oriental Perfumes";
       default:
         return "Another Oud Perfumes";
     }
