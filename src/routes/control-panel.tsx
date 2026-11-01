@@ -1,10 +1,10 @@
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { 
   Check, Sparkles, RefreshCw, Lock, Search, 
   Trash2, ClipboardList, Package, Layers, Calendar, User, Mail,
-  Upload, Edit3
+  Upload, Edit3, Trophy, Crown, TrendingUp, BarChart3
 } from "lucide-react";
 import { PRODUCTS, PRODUCT_IMAGES } from "@/data/catalog";
 import {
@@ -22,7 +22,7 @@ export const Route = createFileRoute("/control-panel")({
 });
 
 type FragranceMode = "OUD_BASE" | "FLORAL_BASE" | "FRUITY_BASE" | "FRESH_BASE" | "SPICY_BASE";
-type TabName = "orders" | "products";
+type TabName = "orders" | "products" | "leaderboard";
 
 function getStandardPriceForSize(basePrice: number, size: string): number {
   if (size === "10 ml") return Math.round(basePrice * 0.3);
@@ -481,6 +481,116 @@ Thank you for choosing Voguish Moments. We truly appreciate your support and hop
     revenue: orders.reduce((sum, o) => sum + (o.total || 0), 0),
   };
 
+  // Leaderboard states & analytics
+  const [leaderboardSearch, setLeaderboardSearch] = useState("");
+  const [leaderboardSort, setLeaderboardSort] = useState<"orders" | "units" | "revenue">("orders");
+
+  const perfumeStats = useMemo(() => {
+    const map: Record<string, {
+      slug: string;
+      name: string;
+      img: string;
+      category: string;
+      base?: string;
+      price: number;
+      orderCount: number;
+      unitsSold: number;
+      revenue: number;
+      sizes: Record<string, number>;
+    }> = {};
+
+    products.forEach((p) => {
+      map[p.slug] = {
+        slug: p.slug,
+        name: p.name,
+        img: p.img,
+        category: p.category || "",
+        base: p.base,
+        price: p.price,
+        orderCount: 0,
+        unitsSold: 0,
+        revenue: 0,
+        sizes: {},
+      };
+    });
+
+    orders.forEach((order) => {
+      if (!order.items || !Array.isArray(order.items)) return;
+      const seenInThisOrder = new Set<string>();
+
+      order.items.forEach((item: any) => {
+        let key = item.slug;
+        if (!key || !map[key]) {
+          const found = products.find(
+            (p) => p.name.toLowerCase().trim() === (item.name || "").toLowerCase().trim()
+          );
+          if (found) key = found.slug;
+        }
+
+        if (!key) {
+          key = item.name ? item.name.toLowerCase().replace(/\s+/g, "-") : "unknown";
+        }
+
+        if (!map[key]) {
+          map[key] = {
+            slug: key,
+            name: item.name || key,
+            img: item.img || "",
+            category: "Fragrance",
+            price: item.price || 0,
+            orderCount: 0,
+            unitsSold: 0,
+            revenue: 0,
+            sizes: {},
+          };
+        }
+
+        const entry = map[key];
+        const qty = Number(item.qty) || 1;
+        const price = Number(item.price) || 0;
+        const size = item.size || "Standard";
+
+        entry.unitsSold += qty;
+        entry.revenue += (price * qty);
+        entry.sizes[size] = (entry.sizes[size] || 0) + qty;
+        seenInThisOrder.add(key);
+      });
+
+      seenInThisOrder.forEach((k) => {
+        if (map[k]) {
+          map[k].orderCount += 1;
+        }
+      });
+    });
+
+    return map;
+  }, [products, orders]);
+
+  const leaderboardList = useMemo(() => {
+    let list = Object.values(perfumeStats);
+
+    if (leaderboardSearch.trim()) {
+      const q = leaderboardSearch.toLowerCase().trim();
+      list = list.filter(
+        (p) => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q)
+      );
+    }
+
+    list.sort((a, b) => {
+      if (leaderboardSort === "orders") {
+        if (b.orderCount !== a.orderCount) return b.orderCount - a.orderCount;
+        return b.unitsSold - a.unitsSold;
+      }
+      if (leaderboardSort === "units") {
+        if (b.unitsSold !== a.unitsSold) return b.unitsSold - a.unitsSold;
+        return b.orderCount - a.orderCount;
+      }
+      return b.revenue - a.revenue;
+    });
+
+    return list;
+  }, [perfumeStats, leaderboardSearch, leaderboardSort]);
+
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
       <div className="flex-1 flex flex-col md:flex-row min-h-screen">
@@ -534,6 +644,18 @@ Thank you for choosing Voguish Moments. We truly appreciate your support and hop
               >
                 <Package className="w-3.5 h-3.5 md:w-4 md:h-4" />
                 <span>Products</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab("leaderboard")}
+                className={`flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2 md:py-3 rounded-xl text-[10px] md:text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer shrink-0 ${
+                  activeTab === "leaderboard"
+                    ? "bg-[#1c1917] text-white shadow-md shadow-stone-900/10"
+                    : "text-muted-foreground hover:bg-[#FAF9F5] hover:text-foreground bg-white/50 border border-border/40 md:border-none"
+                }`}
+              >
+                <Trophy className="w-3.5 h-3.5 md:w-4 md:h-4 text-amber-500" />
+                <span>Leaderboard</span>
               </button>
             </nav>
           </div>
@@ -839,6 +961,16 @@ Thank you for choosing Voguish Moments. We truly appreciate your support and hop
                         <div className="flex-1 space-y-0.5">
                           <div className="text-xs font-semibold text-foreground flex items-center gap-1.5 flex-wrap">
                             <span>{p.name}</span>
+                            {perfumeStats[p.slug]?.orderCount ? (
+                              <span className="bg-amber-100 text-amber-900 border border-amber-300 text-[9px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-xs">
+                                <Trophy className="w-2.5 h-2.5 text-amber-600" />
+                                {perfumeStats[p.slug].orderCount} {perfumeStats[p.slug].orderCount === 1 ? "order" : "orders"}
+                              </span>
+                            ) : (
+                              <span className="text-[8px] text-muted-foreground bg-[#FAF9F5] border border-border/60 px-1.5 py-0.5 rounded">
+                                0 orders
+                              </span>
+                            )}
                           </div>
                           <div className="text-[10px] text-muted-foreground">{p.category}</div>
                           <div className="text-[10px] font-medium text-foreground">₹{p.price.toLocaleString("en-IN")}</div>
@@ -1247,8 +1379,304 @@ Thank you for choosing Voguish Moments. We truly appreciate your support and hop
             </div>
           )}
 
+          {/* TAB 3: LEADERBOARD & ORDER COUNT */}
+          {activeTab === "leaderboard" && (
+            <div className="space-y-8 animate-fade-up">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h2 className="font-display text-3xl text-foreground flex items-center gap-2.5">
+                    <span>Perfume Leaderboard</span>
+                    <Trophy className="w-6 h-6 text-amber-500" />
+                  </h2>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Real-time ranking of best-selling perfumes by order count, units sold &amp; revenue.
+                  </p>
+                </div>
 
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Sort By:</span>
+                  <div className="bg-white border border-[#EAE8E2] rounded-xl p-1 flex items-center gap-1 shadow-xs">
+                    <button
+                      onClick={() => setLeaderboardSort("orders")}
+                      className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                        leaderboardSort === "orders"
+                          ? "bg-[#1c1917] text-white shadow-xs"
+                          : "text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      Orders
+                    </button>
+                    <button
+                      onClick={() => setLeaderboardSort("units")}
+                      className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                        leaderboardSort === "units"
+                          ? "bg-[#1c1917] text-white shadow-xs"
+                          : "text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      Bottles Sold
+                    </button>
+                    <button
+                      onClick={() => setLeaderboardSort("revenue")}
+                      className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                        leaderboardSort === "revenue"
+                          ? "bg-[#1c1917] text-white shadow-xs"
+                          : "text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      Revenue
+                    </button>
+                  </div>
+                </div>
+              </div>
 
+              {/* Stats KPI Cards */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="bg-white border border-[#EAE8E2] rounded-2xl p-4 shadow-sm relative overflow-hidden">
+                  <div className="flex items-center justify-between">
+                    <div className="text-[9px] tracking-wider text-muted-foreground font-bold uppercase">#1 Best Seller</div>
+                    <Trophy className="w-4 h-4 text-amber-500" />
+                  </div>
+                  <div className="text-lg md:text-xl font-display font-semibold mt-1.5 truncate text-foreground">
+                    {leaderboardList[0]?.orderCount > 0 ? leaderboardList[0].name : "No orders yet"}
+                  </div>
+                  <div className="text-[10px] text-muted-foreground mt-0.5">
+                    {leaderboardList[0]?.orderCount > 0
+                      ? `${leaderboardList[0].orderCount} orders · ${leaderboardList[0].unitsSold} bottles sold`
+                      : "Awaiting customer orders"}
+                  </div>
+                </div>
+
+                <div className="bg-white border border-[#EAE8E2] rounded-2xl p-4 shadow-sm">
+                  <div className="flex items-center justify-between">
+                    <div className="text-[9px] tracking-wider text-muted-foreground font-bold uppercase">Total Orders</div>
+                    <ClipboardList className="w-4 h-4 text-accent" />
+                  </div>
+                  <div className="text-2xl md:text-3xl font-display mt-1.5 text-foreground">{orders.length}</div>
+                  <div className="text-[10px] text-muted-foreground mt-0.5">Customer orders recorded</div>
+                </div>
+
+                <div className="bg-white border border-[#EAE8E2] rounded-2xl p-4 shadow-sm">
+                  <div className="flex items-center justify-between">
+                    <div className="text-[9px] tracking-wider text-emerald-600 font-bold uppercase">Total Bottles Sold</div>
+                    <Package className="w-4 h-4 text-emerald-600" />
+                  </div>
+                  <div className="text-2xl md:text-3xl font-display mt-1.5 text-emerald-600">
+                    {Object.values(perfumeStats).reduce((sum, p) => sum + p.unitsSold, 0)}
+                  </div>
+                  <div className="text-[10px] text-muted-foreground mt-0.5">Total perfume bottles ordered</div>
+                </div>
+
+                <div className="bg-white border border-[#EAE8E2] rounded-2xl p-4 shadow-sm">
+                  <div className="flex items-center justify-between">
+                    <div className="text-[9px] tracking-wider text-foreground font-bold uppercase">Product Revenue</div>
+                    <TrendingUp className="w-4 h-4 text-foreground" />
+                  </div>
+                  <div className="text-2xl md:text-3xl font-display mt-1.5 font-bold text-foreground">
+                    ₹{Object.values(perfumeStats).reduce((sum, p) => sum + p.revenue, 0).toLocaleString("en-IN")}
+                  </div>
+                  <div className="text-[10px] text-muted-foreground mt-0.5">Gross product sales volume</div>
+                </div>
+              </div>
+
+              {/* Search Bar */}
+              <div className="flex items-center bg-white border border-[#EAE8E2] rounded-2xl px-4 py-3 shadow-xs">
+                <Search className="w-4 h-4 text-muted-foreground mr-3" />
+                <input
+                  type="text"
+                  placeholder="Search perfume by name or base..."
+                  value={leaderboardSearch}
+                  onChange={(e) => setLeaderboardSearch(e.target.value)}
+                  className="w-full bg-transparent text-xs text-foreground outline-none placeholder:text-muted-foreground"
+                />
+                {leaderboardSearch && (
+                  <button
+                    onClick={() => setLeaderboardSearch("")}
+                    className="text-[10px] text-muted-foreground hover:text-foreground uppercase font-bold cursor-pointer"
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
+
+              {/* Leaderboard Cards / Table */}
+              <div className="bg-white border border-[#EAE8E2] rounded-3xl p-4 md:p-6 shadow-sm space-y-3">
+                <div className="flex items-center justify-between pb-3 border-b border-border/60 text-[9px] font-bold uppercase tracking-wider text-muted-foreground px-2">
+                  <div className="w-12 text-center">Rank</div>
+                  <div className="flex-1 ml-4">Perfume</div>
+                  <div className="w-24 text-center">Order Count</div>
+                  <div className="w-24 text-center hidden sm:block">Units Sold</div>
+                  <div className="w-28 text-right hidden md:block">Revenue</div>
+                </div>
+
+                {leaderboardList.length === 0 ? (
+                  <div className="py-12 text-center text-xs text-muted-foreground">
+                    No perfumes found matching your search.
+                  </div>
+                ) : (
+                  leaderboardList.map((p, idx) => {
+                    const rank = idx + 1;
+                    const maxMetric = Math.max(
+                      1,
+                      leaderboardSort === "orders"
+                        ? (leaderboardList[0]?.orderCount || 1)
+                        : leaderboardSort === "units"
+                        ? (leaderboardList[0]?.unitsSold || 1)
+                        : (leaderboardList[0]?.revenue || 1)
+                    );
+                    const currentMetric = leaderboardSort === "orders" ? p.orderCount : leaderboardSort === "units" ? p.unitsSold : p.revenue;
+                    const progressPercent = Math.min(100, Math.round((currentMetric / maxMetric) * 100));
+
+                    return (
+                      <div
+                        key={p.slug}
+                        className={`p-3 md:p-4 rounded-2xl border transition-all ${
+                          rank === 1 && p.orderCount > 0
+                            ? "border-amber-300 bg-amber-50/30"
+                            : rank === 2 && p.orderCount > 0
+                            ? "border-stone-300 bg-stone-50/40"
+                            : rank === 3 && p.orderCount > 0
+                            ? "border-amber-200/60 bg-amber-50/10"
+                            : "border-border/60 bg-white hover:bg-[#FAF9F5]/40"
+                        }`}
+                      >
+                        <div className="flex items-center gap-3 md:gap-4">
+                          {/* Rank Badge */}
+                          <div className="w-10 md:w-12 flex flex-col items-center justify-center shrink-0">
+                            {rank === 1 && p.orderCount > 0 ? (
+                              <div className="w-8 h-8 rounded-full bg-amber-400 text-stone-900 font-extrabold flex items-center justify-center text-xs shadow-sm ring-2 ring-amber-300">
+                                🥇
+                              </div>
+                            ) : rank === 2 && p.orderCount > 0 ? (
+                              <div className="w-8 h-8 rounded-full bg-stone-200 text-stone-800 font-extrabold flex items-center justify-center text-xs shadow-sm ring-1 ring-stone-300">
+                                🥈
+                              </div>
+                            ) : rank === 3 && p.orderCount > 0 ? (
+                              <div className="w-8 h-8 rounded-full bg-amber-700/20 text-amber-900 font-extrabold flex items-center justify-center text-xs shadow-sm">
+                                🥉
+                              </div>
+                            ) : (
+                              <div className="w-7 h-7 rounded-full bg-cream border border-border text-muted-foreground font-bold flex items-center justify-center text-[11px]">
+                                #{rank}
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Image */}
+                          <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl overflow-hidden bg-cream border border-border/40 shrink-0">
+                            {p.img ? (
+                              <img src={p.img} alt={p.name} className="w-full h-full object-cover" />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-[9px] text-muted-foreground uppercase">
+                                No img
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Info */}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <h4 className="font-semibold text-xs md:text-sm text-foreground uppercase tracking-wider truncate">
+                                {p.name}
+                              </h4>
+                              {rank === 1 && p.orderCount > 0 && (
+                                <span className="bg-amber-400 text-stone-900 text-[8px] font-extrabold tracking-widest px-2 py-0.5 rounded-full uppercase flex items-center gap-1 shadow-xs">
+                                  <Crown className="w-2.5 h-2.5" /> Top Seller
+                                </span>
+                              )}
+                              {p.base && (
+                                <span className="text-[8px] bg-cream border border-border text-muted-foreground px-1.5 py-0.5 rounded uppercase">
+                                  {p.base.replace(/_/g, " ")}
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-[10px] text-muted-foreground truncate mt-0.5">
+                              {p.category}
+                            </div>
+
+                            {/* Size breakdown pills */}
+                            <div className="flex items-center gap-1.5 flex-wrap mt-1.5">
+                              {Object.keys(p.sizes).length > 0 ? (
+                                Object.entries(p.sizes).map(([sz, count]) => (
+                                  <span
+                                    key={sz}
+                                    className="text-[9px] bg-[#FAF9F5] border border-border text-foreground px-1.5 py-0.5 rounded font-medium"
+                                  >
+                                    {sz}: <strong className="text-[#1c1917]">{count}</strong>
+                                  </span>
+                                ))
+                              ) : (
+                                <span className="text-[9px] text-muted-foreground italic">
+                                  No bottles ordered yet
+                                </span>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Order Count Stat */}
+                          <div className="w-24 text-center shrink-0">
+                            <div className={`text-base md:text-lg font-bold font-display ${
+                              p.orderCount > 0 ? "text-foreground" : "text-muted-foreground/60"
+                            }`}>
+                              {p.orderCount}
+                            </div>
+                            <div className="text-[9px] text-muted-foreground uppercase font-bold tracking-wider">
+                              {p.orderCount === 1 ? "Order" : "Orders"}
+                            </div>
+                          </div>
+
+                          {/* Units Sold Stat */}
+                          <div className="w-24 text-center shrink-0 hidden sm:block">
+                            <div className={`text-sm md:text-base font-bold font-display ${
+                              p.unitsSold > 0 ? "text-emerald-700" : "text-muted-foreground/60"
+                            }`}>
+                              {p.unitsSold}
+                            </div>
+                            <div className="text-[9px] text-muted-foreground uppercase font-bold tracking-wider">
+                              Bottles
+                            </div>
+                          </div>
+
+                          {/* Revenue Stat */}
+                          <div className="w-28 text-right shrink-0 hidden md:block">
+                            <div className="text-sm font-bold text-foreground">
+                              ₹{p.revenue.toLocaleString("en-IN")}
+                            </div>
+                            <div className="text-[9px] text-muted-foreground uppercase tracking-wider">
+                              Gross
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Relative Progress Bar */}
+                        {p.orderCount > 0 && (
+                          <div className="mt-3 pt-2.5 border-t border-border/40 flex items-center gap-3">
+                            <div className="flex-1 bg-stone-100 rounded-full h-1.5 overflow-hidden">
+                              <div
+                                className={`h-full rounded-full transition-all duration-500 ${
+                                  rank === 1
+                                    ? "bg-amber-400"
+                                    : rank === 2
+                                    ? "bg-stone-400"
+                                    : rank === 3
+                                    ? "bg-amber-600"
+                                    : "bg-stone-800"
+                                }`}
+                                style={{ width: `${Math.max(4, progressPercent)}%` }}
+                              />
+                            </div>
+                            <span className="text-[9px] font-bold text-muted-foreground w-10 text-right">
+                              {progressPercent}%
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            </div>
+          )}
         </main>
       </div>
     </div>
