@@ -119,7 +119,6 @@ export const PRODUCTS: Product[] = [
     base: "OUD_BASE",
     badge: "Limited Edition",
     pricing: { "15 ml": 700, "50 ml": 1600 },
-    outOfStock: ["15 ml"],
     gallery: [divorce15mlImg]
   },
   {
