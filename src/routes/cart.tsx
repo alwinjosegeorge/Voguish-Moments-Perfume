@@ -62,13 +62,18 @@ const STATES_OF_INDIA = [
 ];
 
 function CartPage() {
-  const { detailed, setQty, remove, subtotal, clear } = useCart();
+  const { detailed, setQty, remove, subtotal, clear, count } = useCart();
   const [deliveryState, setDeliveryState] = useState("");
   const [isCheckingOut, setIsCheckingOut] = useState(false);
 
-  const shipping = isCheckingOut
-    ? (deliveryState.toLowerCase() === "kerala" ? 70 : deliveryState ? 120 : 0)
-    : 0;
+  const getShippingCharge = (state: string): number => {
+    const st = state.trim().toLowerCase();
+    if (!st) return 0;
+    if (st === "kerala") return 70;
+    if (st === "tamil nadu" || st === "karnataka") return 120;
+    return 600;
+  };
+  const shipping = isCheckingOut ? getShippingCharge(deliveryState) : 0;
   const total = subtotal + shipping;
   const [orderPlaced, setOrderPlaced] = useState<string | null>(null);
   const [isStateDropdownOpen, setIsStateDropdownOpen] = useState(false);
